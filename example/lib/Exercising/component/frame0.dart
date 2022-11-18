@@ -31,9 +31,20 @@ class ExerciseFrame extends StatefulWidget {
 }
 
 class _FrameState extends State<ExerciseFrame> {
+  bool _isDetectingPose = false;
+  bool _isDetectingBodyMask = false;
+  Pose? _detectedPose;
+  ui.Image? _maskImage;
+  Image? _cameraImage;
+  Size _imageSize = Size.zero;
+  CameraDescription? cameraDescription;
+  List<CameraDescription> cameras = [];
+  late CameraController _camera; //final
   int count = 0;
   bool a = false;
   late Timer timer;
+  //Detection detection=new Detection();
+
 
   Future<int> _getTime() async {
     timer = Timer.periodic(Duration(seconds: 1), (_) {
@@ -45,12 +56,32 @@ class _FrameState extends State<ExerciseFrame> {
       } else {
         UndoneList().removefirst();
         timer.cancel();
+        _stopCameraStream();
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => RestTime()));
 
       }
     });
     return count;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    count = 5;
+    //_getTime();
+    _startCameraStream();
+    _toggleDetectPose();
+  }
+
+  void _setFrameColor() {
+    if (a) {
+      poseFrameColor = Colors.green;
+    } else {
+      poseFrameColor = Colors.red;
+    }
+
+    setState(() {});
   }
 
   Future<void> _showPoseIntro(BuildContext context) {
@@ -92,17 +123,106 @@ class _FrameState extends State<ExerciseFrame> {
     );
   }
 
-  void _setFrameColor() {
-    if (a) {
-      poseFrameColor = Colors.green;
-    } else {
-      poseFrameColor = Colors.red;
-    }
+  Future<void> _startCameraStream() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    final request = await Permission.camera.request();
+    cameras = await availableCameras();
+    _camera = CameraController(
+      cameras[0],
+      ResolutionPreset.low,
 
-    setState(() {});
+    );
+
+    if (request.isGranted) {
+      await BodyDetection.startCameraStream(
+        onFrameAvailable: _handleCameraImage,
+        onPoseAvailable: (pose) {
+          if (!_isDetectingPose) return;
+          _handlePose(pose);
+          setState(() {
+
+            CameraPreview(_camera);
+          });
+        },
+        onMaskAvailable: (mask) {
+          if (!_isDetectingBodyMask) return;
+          _handleBodyMask(mask);
+          setState(() {
+            CameraPreview(_camera);
+          });
+        },
+      );
+    }
   }
 
+  Future<void> _stopCameraStream() async {
+    await BodyDetection.stopCameraStream();
+    setState(() {
+      _cameraImage = null;
+      _imageSize = Size.zero;
+    });
+  }
 
+  void _handleCameraImage(ImageResult result) {
+    if (!mounted) return;
+
+    final image = Image.memory(
+      result.bytes,
+      gaplessPlayback: true,
+      fit: BoxFit.contain,
+    );
+
+    setState(() {
+      _cameraImage = image;
+      _imageSize = result.size;
+    });
+  }
+
+  void _handlePose(Pose? pose) {
+    // Ignore if navigated out of the page.
+    if (!mounted) return;
+
+    setState(() {
+      _detectedPose = pose;
+    });
+  }
+
+  void _handleBodyMask(BodyMask? mask) {
+    // Ignore if navigated out of the page.
+    if (!mounted) return;
+    if (mask == null) {
+      setState(() {
+        _maskImage = null;
+      });
+      return;
+    }
+
+    final bytes = mask.buffer
+        .expand(
+          (it) => [0, 0, 0, (it * 255).toInt()],
+        )
+        .toList();
+    ui.decodeImageFromPixels(Uint8List.fromList(bytes), mask.width, mask.height,
+        ui.PixelFormat.rgba8888, (image) {
+      setState(() {
+        _maskImage = image;
+      });
+    });
+  }
+
+  Future<void> _toggleDetectPose() async {
+    if (_isDetectingPose) {
+      await BodyDetection.disablePoseDetection();
+    } else {
+      await BodyDetection.enablePoseDetection();
+    }
+
+    setState(() {
+      _isDetectingPose = !_isDetectingPose;
+      _detectedPose = null;
+    });
+  }
+//--------------------------------------------
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -110,7 +230,22 @@ class _FrameState extends State<ExerciseFrame> {
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [
-            const Positioned(bottom: 0 ,left: 0,child: Detection()),
+            /*Positioned(
+              child: Container(
+                padding:EdgeInsets.only(top: 95),
+                //alignment: AlignmentDirectional.bottomCenter,
+                child: ClipRect(
+                  child: CustomPaint(
+                    child: _cameraImage,
+                    foregroundPainter: PoseMaskPainter(
+                      pose: _detectedPose,
+                      mask: _maskImage,
+                      imageSize: _imageSize,
+                    ),
+                  ),
+                ),
+              ),
+            ),*/
             Positioned(
               top: -280,
               child: Container(
@@ -133,7 +268,7 @@ class _FrameState extends State<ExerciseFrame> {
                 ),
               ),
             ),
-            const Positioned(
+            Positioned(
               top: 50,
               left: 60,
               child: Text(
@@ -178,7 +313,6 @@ class _FrameState extends State<ExerciseFrame> {
                 },
               ),
             ),
-
           ],
         ),
       ),

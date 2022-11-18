@@ -8,7 +8,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:body_detection_example/main.dart';
+import 'package:body_detection_example/cc/main.dart';
 
 void main() {
   testWidgets('Verify Platform version', (WidgetTester tester) async {

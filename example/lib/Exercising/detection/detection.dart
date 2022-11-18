@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:body_detection/models/image_result.dart';
@@ -10,32 +11,33 @@ import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
 import 'package:body_detection/body_detection.dart';
 import 'package:permission_handler/permission_handler.dart';
+import '../../cc/sports menu/undoneList.dart';
 import 'pose_mask_painter.dart';
 
 class Detection extends StatefulWidget {
-  const Detection({Key? key}) : super(key: key);
+  const Detection({Key? key,}) : super(key: key);
 
   @override
-  State<Detection> createState() => _MyAppState();
+  State<Detection> createState() => _DetectionState();
 }
 
-class _MyAppState extends State<Detection> {
+class _DetectionState extends State<Detection> {
   bool _isDetectingPose = false;
-  bool _isDetectingBodyMask = false;
+  //bool _isDetectingBodyMask = false;
   Pose? _detectedPose;
   ui.Image? _maskImage;
   Image? _cameraImage;
-  Size _imageSize = Size.zero;
+  Size _imageSize =Size.zero;
   CameraDescription? cameraDescription;
   List<CameraDescription> cameras = [];
   late CameraController _camera; //final
+
 
   @override
   void initState() {
     _startCameraStream();
     _toggleDetectPose();
   }
-
 
   Future<void> _startCameraStream() async {
     WidgetsFlutterBinding.ensureInitialized();
@@ -52,9 +54,6 @@ class _MyAppState extends State<Detection> {
         onPoseAvailable: (pose) {
           if (!_isDetectingPose) return;
           _handlePose(pose);
-          setState(() {
-            CameraPreview(_camera);
-          });
         },
         /* onMaskAvailable: (mask) {
           if (!_isDetectingBodyMask) return;
@@ -105,29 +104,6 @@ class _MyAppState extends State<Detection> {
     });
   }
 
-  void _handleBodyMask(BodyMask? mask) {
-    // Ignore if navigated out of the page.
-    if (!mounted) return;
-    if (mask == null) {
-      setState(() {
-        _maskImage = null;
-      });
-      return;
-    }
-
-    final bytes = mask.buffer
-        .expand(
-          (it) => [0, 0, 0, (it * 255).toInt()],
-    )
-        .toList();
-    ui.decodeImageFromPixels(Uint8List.fromList(bytes), mask.width, mask.height,
-        ui.PixelFormat.rgba8888, (image) {
-          setState(() {
-            _maskImage = image;
-          });
-        });
-  }
-
   Future<void> _toggleDetectPose() async {
     if (_isDetectingPose) {
       await BodyDetection.disablePoseDetection();
@@ -141,50 +117,21 @@ class _MyAppState extends State<Detection> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: AlignmentDirectional.bottomCenter,
-      //body: Center(
-      //child: Container(
-      //child: Container(
-      child:
-      ClipRect(
-        child: CustomPaint(
-          child: _cameraImage,
-          foregroundPainter: PoseMaskPainter(
-            pose: _detectedPose,
-            mask: _maskImage,
-            imageSize: _imageSize,
-          ),
-        ),
+    double _defaultRatio=100.0;
+    return Stack(children: [
+      CustomPaint(
+      child: _cameraImage,
+      foregroundPainter: PoseMaskPainter(
+        pose: _detectedPose,
+        mask: _maskImage,
+        imageSize: _imageSize,
       ),
-      /*OutlinedButton(
-                  onPressed: _startCameraStream,
-                  child: const Text('Camera open'),
-                ),
-                OutlinedButton(
-                  onPressed: _stopCameraStream,
-                  child: const Text('Camera stop'),
-                ),
-                OutlinedButton(
-                  onPressed: _toggleDetectPose,
-                  child: _isDetectingPose
-                      ? const Text('Turn off pose detection')
-                      : const Text('Turn on pose detection'),
-                ),
-                OutlinedButton(
-                  onPressed: _toggleDetectBodyMask,
-                  child: _isDetectingBodyMask
-                      ? const Text('Turn off body mask detection')
-                      : const Text('Turn on body mask detection'),
-                ),*/
 
-      //  ),
-      //  ),
-      //  ),
+    ),
+    CameraPreview(_camera),
 
-    );
+    ],);
   }
 }
