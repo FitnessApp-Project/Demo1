@@ -1,4 +1,5 @@
 import 'package:body_detection_example/cc/sports menu/undoneList.dart';
+import 'package:body_detection_example/cc/sports%20menu/poselist.dart';
 import 'package:flutter/material.dart';
 import 'package:body_detection_example/cc/helpers/Constants.dart';
 import '../../Exercising/initial.dart';
@@ -13,6 +14,13 @@ class PoseIntro extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          iconSize: 30,
+          icon: const Icon(Icons.cancel, size: 30.0, color: Colors.white),
+          onPressed: () {
+
+          },
+        ),
         title: Text(record.poseName),
         centerTitle: true,
       ),
@@ -39,8 +47,10 @@ class PoseIntro extends StatelessWidget {
               ),
               alignment: Alignment.center,
               child: Text(
-                record.number+"\n\n"+record.introduction,
-                style: TextStyle(fontSize: 20,color: Colors.brown,fontWeight:FontWeight.bold),
+                record.number + "\n\n" + record.introduction,
+                style: TextStyle(fontSize: 20,
+                    color: Colors.brown,
+                    fontWeight: FontWeight.bold),
               ),
             ),
           ),
@@ -72,7 +82,6 @@ class PoseIntro extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-              //builder: (context) => Detection()));
               builder: (context) => DetectionInitial(),
             ));
       },

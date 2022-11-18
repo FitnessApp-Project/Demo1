@@ -15,23 +15,29 @@ import '../../cc/sports menu/undoneList.dart';
 import 'pose_mask_painter.dart';
 
 class Detection extends StatefulWidget {
-  const Detection({Key? key,}) : super(key: key);
+  const Detection({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<Detection> createState() => _DetectionState();
+
+  void stopstream() {
+    _DetectionState()._stopCameraStream();
+  }
 }
 
 class _DetectionState extends State<Detection> {
   bool _isDetectingPose = false;
+
   //bool _isDetectingBodyMask = false;
   Pose? _detectedPose;
   ui.Image? _maskImage;
   Image? _cameraImage;
-  Size _imageSize =Size.zero;
+  Size _imageSize = Size.zero;
   CameraDescription? cameraDescription;
   List<CameraDescription> cameras = [];
   late CameraController _camera; //final
-
 
   @override
   void initState() {
@@ -55,19 +61,14 @@ class _DetectionState extends State<Detection> {
           if (!_isDetectingPose) return;
           _handlePose(pose);
         },
-        /* onMaskAvailable: (mask) {
-          if (!_isDetectingBodyMask) return;
-          _handleBodyMask(mask);
-          setState(() {
-            CameraPreview(_camera);
-          });
-        },*/
       );
     }
   }
 
   Future<void> _stopCameraStream() async {
     await BodyDetection.stopCameraStream();
+    _camera.dispose();
+    print('stop');
     setState(() {
       _cameraImage = null;
       _imageSize = Size.zero;
@@ -119,19 +120,19 @@ class _DetectionState extends State<Detection> {
 
   @override
   Widget build(BuildContext context) {
-    double _defaultRatio=100.0;
-    return Stack(children: [
-      CustomPaint(
-      child: _cameraImage,
-      foregroundPainter: PoseMaskPainter(
-        pose: _detectedPose,
-        mask: _maskImage,
-        imageSize: _imageSize,
-      ),
-
-    ),
-    CameraPreview(_camera),
-
-    ],);
+    double _defaultRatio = 100.0;
+    return Stack(
+      children: [
+        CustomPaint(
+          child: _cameraImage,
+          foregroundPainter: PoseMaskPainter(
+            pose: _detectedPose,
+            mask: _maskImage,
+            imageSize: _imageSize,
+          ),
+        ),
+        //CameraPreview(_camera),
+      ],
+    );
   }
 }

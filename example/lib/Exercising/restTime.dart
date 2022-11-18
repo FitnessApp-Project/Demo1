@@ -27,6 +27,7 @@ class _RestTimeState extends State<RestTime> {
           count -= 1;
         });
       } else {
+        print("????");
         timer.cancel();
         UndoneList().removefirst();
         Navigator.push(
@@ -47,77 +48,77 @@ class _RestTimeState extends State<RestTime> {
   Widget build(BuildContext context) {
     return MaterialApp(
         home: Scaffold(
-          backgroundColor: kPrimaryColor,
-          body: Container(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  alignment: Alignment.center,
-                  width: 360,
-                  height: 360,
-                  margin: EdgeInsets.all(30),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: Colors.white,
-                      width: 15.0,
-                      style: BorderStyle.solid,
-                    ),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "休息時間",
-                        style: TextStyle(fontSize: 30, color: Colors.white),
-                      ),
-                      Text(
-                        count.toString(),
-                        style: TextStyle(fontSize: 80, color: Colors.white),
-                      ),
-                    ],
-                  ),
+      backgroundColor: kPrimaryColor,
+      body: Container(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              alignment: Alignment.center,
+              width: 360,
+              height: 360,
+              margin: EdgeInsets.all(30),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: Colors.white,
+                  width: 15.0,
+                  style: BorderStyle.solid,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    IconButton(
-                      iconSize: 90,
-                      highlightColor: Colors.yellow,
-                      padding: const EdgeInsets.all(0),
-                      icon: Icon(Icons.arrow_left, size: 90.0, color: Colors.brown),
-                      onPressed: () {
-                        timer.cancel();
-                        Navigator.push(
-                            context, MaterialPageRoute(builder: (context) => PoseIntro()));
-                        debugPrint('preview');
-                      },
-                    ),
-                    Text(
-                      "下一個動作:\n" + UndoneList().getNextrecord().poseName ,
-                      style: TextStyle(fontSize: 25, color: Colors.white),
-                    ),
-                    IconButton(
-                      iconSize: 90,
-                      highlightColor: Colors.yellow,
-                      padding: const EdgeInsets.all(0),
-                      icon:
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "休息時間",
+                    style: TextStyle(fontSize: 30, color: Colors.white),
+                  ),
+                  Text(
+                    count.toString(),
+                    style: TextStyle(fontSize: 80, color: Colors.white),
+                  ),
+                ],
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                IconButton(
+                  iconSize: 90,
+                  highlightColor: Colors.yellow,
+                  padding: const EdgeInsets.all(0),
+                  icon: Icon(Icons.arrow_left, size: 90.0, color: Colors.brown),
+                  onPressed: () {
+                    timer.cancel();
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => PoseIntro()));
+                    debugPrint('preview');
+                  },
+                ),
+                Text(
+                  "下一個動作:\n" + UndoneList().getNextrecord().poseName,
+                  style: TextStyle(fontSize: 25, color: Colors.white),
+                ),
+                IconButton(
+                  iconSize: 90,
+                  highlightColor: Colors.yellow,
+                  padding: const EdgeInsets.all(0),
+                  icon:
                       Icon(Icons.arrow_right, size: 90.0, color: Colors.brown),
-                      onPressed: () {
-                        timer.cancel();
-                        UndoneList().removefirst();
-                        Navigator.push(
-                            context, MaterialPageRoute(builder: (context) => PoseIntro()));
-                        debugPrint("next");
-                      },
-                    ),
-                  ],
+                  onPressed: () {
+                    timer.cancel();
+                    UndoneList().removefirst();
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => PoseIntro()));
+                    print("right");
+                  },
                 ),
               ],
             ),
-          ),
-        ));
+          ],
+        ),
+      ),
+    ));
   }
 }
 

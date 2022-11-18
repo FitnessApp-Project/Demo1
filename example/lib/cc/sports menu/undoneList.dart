@@ -17,7 +17,7 @@ class UndoneList {
     return _records.records.first;
   }
   poseRecord getNextrecord() {
-    return _records.records[1];
+      return _records.records[1];
   }
 
  void removefirst() {

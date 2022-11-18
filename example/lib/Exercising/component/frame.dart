@@ -24,16 +24,28 @@ import 'package:permission_handler/permission_handler.dart';
 import '../../Exercising/detection/pose_mask_painter.dart';
 
 class ExerciseFrame extends StatefulWidget {
+  const ExerciseFrame({Key? key}) : super(key: key);
 
-  const ExerciseFrame({Key? key }) : super(key: key) ;
   @override
   State<ExerciseFrame> createState() => _FrameState();
+
+  void stopTime(){
+    _FrameState().timer.cancel();
+  }
 }
 
 class _FrameState extends State<ExerciseFrame> {
   int count = 0;
   bool a = false;
   late Timer timer;
+  Detection detection=Detection();
+
+  @override
+  void initState() {
+    super.initState();
+    count = 5;
+    _getTime();
+  }
 
   Future<int> _getTime() async {
     timer = Timer.periodic(Duration(seconds: 1), (_) {
@@ -41,13 +53,11 @@ class _FrameState extends State<ExerciseFrame> {
         setState(() {
           count -= 1;
         });
-
       } else {
-        UndoneList().removefirst();
         timer.cancel();
+        detection.stopstream();
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => RestTime()));
-
       }
     });
     return count;
@@ -59,7 +69,10 @@ class _FrameState extends State<ExerciseFrame> {
       builder: (BuildContext context) {
         return AlertDialog(
           scrollable: true,
-          title: Text('posename'),
+          title: Text(
+            UndoneList().getrecord().poseName,
+            style: TextStyle(fontSize: 20),
+          ),
           content: Container(
             height: 400,
             width: 300,
@@ -67,13 +80,11 @@ class _FrameState extends State<ExerciseFrame> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                /*Text('總金額：' + '9999', style: TextStyle(color: Colors.black)),
-                */
                 Image.asset('assets/images/IMG_20200704_134015.jpg'),
-                Text('動作解說：' + 'XXXXX',
+                Text('動作解說：' + "\n" + UndoneList().getrecord().introduction,
                     style: TextStyle(color: Colors.black, fontSize: 20)),
-                Text('次數/組數' + 'XXXXXX',
-                    style: TextStyle(color: Colors.black, fontSize: 15)),
+                /*Text('次數/組數' + UndoneList().getrecord().number,
+                    style: TextStyle(color: Colors.black, fontSize: 15)),*/
               ],
             ),
           ),
@@ -98,10 +109,8 @@ class _FrameState extends State<ExerciseFrame> {
     } else {
       poseFrameColor = Colors.red;
     }
-
     setState(() {});
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -110,9 +119,10 @@ class _FrameState extends State<ExerciseFrame> {
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [
-            const Positioned(bottom: 0 ,left: 0,child: Detection()),
+            Positioned(bottom: 0, left: 0, child:detection),
+            //半圓結構
             Positioned(
-              top: -280,
+              top: -310,
               child: Container(
                 width: 500,
                 height: 500,
@@ -134,26 +144,26 @@ class _FrameState extends State<ExerciseFrame> {
               ),
             ),
             const Positioned(
-              top: 50,
-              left: 60,
+              top: 40,
+              left: 40,
               child: Text(
                 "次數",
                 style: TextStyle(fontSize: 35, color: Colors.white),
               ),
             ),
             Positioned(
-              top: 80,
+              top: 70,
               child: Text(
                 count.toString(),
                 style: TextStyle(fontSize: 100, color: Colors.white),
               ),
             ),
             Positioned(
-              right: 60,
-              top: 50,
+              right: 40,
+              top: 40,
               child: Text(
-                "10下/組",
-                style: TextStyle(fontSize: 30, color: Colors.white),
+                UndoneList().getrecord().number,
+                style: TextStyle(fontSize: 25, color: Colors.white),
               ),
             ),
             Positioned(
@@ -178,11 +188,9 @@ class _FrameState extends State<ExerciseFrame> {
                 },
               ),
             ),
-
           ],
         ),
       ),
     );
   }
 }
-

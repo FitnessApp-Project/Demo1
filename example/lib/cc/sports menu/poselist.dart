@@ -13,6 +13,8 @@ import 'package:body_detection_example/cc/poseList/poseRecord.dart';
 import 'package:body_detection_example/cc/poseList/poseRecordList.dart';
 import 'package:body_detection_example/cc/poseList/poseRecordService.dart';
 
+import '../tabBar.dart';
+
 class PoseList extends StatefulWidget {
   @override
   _PoseListState createState() {
@@ -48,7 +50,14 @@ class _PoseListState extends State<PoseList> {
     return Scaffold(
       backgroundColor: appDarkGreyColor,
       appBar: AppBar(
-        leading: BackButton(),
+        leading: IconButton(
+          iconSize: 30,
+          icon: Icon(Icons.arrow_back, size: 30.0, color: Colors.white),
+          onPressed: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => tabBar()));
+          },
+        ),
       ),
       body: Stack(
         alignment: AlignmentDirectional.topStart,
