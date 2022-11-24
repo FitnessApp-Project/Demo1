@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import '../cc/helpers/Constants.dart';
+import '../cc/setting/Setting2.dart';
 import '../cc/sports menu/poseIntro.dart';
 import '../cc/sports menu/undoneList.dart';
 
@@ -16,7 +17,7 @@ class RestTime extends StatefulWidget {
 }
 
 class _RestTimeState extends State<RestTime> {
-  int count = 0;
+  int count=0;
   bool a = false;
   late Timer timer;
 
@@ -27,7 +28,6 @@ class _RestTimeState extends State<RestTime> {
           count -= 1;
         });
       } else {
-        print("????");
         timer.cancel();
         UndoneList().removefirst();
         Navigator.push(
@@ -40,9 +40,10 @@ class _RestTimeState extends State<RestTime> {
   @override
   void initState() {
     super.initState();
-    count = 5;
+    count=Setting2().getRestTime();
     _getTime();
   }
+
 
   @override
   Widget build(BuildContext context) {

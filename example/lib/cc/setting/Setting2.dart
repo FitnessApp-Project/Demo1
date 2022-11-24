@@ -1,13 +1,51 @@
+import 'dart:io';
+
+import 'package:body_detection_example/Exercising/restTime.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 String value = "3";
 
-class Setting2 extends StatelessWidget {
+class Setting2 extends StatefulWidget {
+  const Setting2({Key? key}) : super(key: key);
+
+  @override
+  State<Setting2> createState() => _Setting2State();
+
+  int getRestTime() {
+    return _Setting2State().getRestTime();
+  }
+}
+
+class _Setting2State extends State<Setting2> {
+  final TextEditingController myController = new TextEditingController();
+  static int restTime = 5; //運動間休息預設
+  static int noticeTime = 5; //課表介紹時間?
+  static String time="20:00";
+
+  int getRestTime() {
+    return restTime;
+  }
+
+  @override
+  initState() {
+    super.initState();
+  }
+
+  Future<TimeOfDay?> showTime(context) async {
+    TimeOfDay? t = await showTimePicker(
+        context: context, initialTime: TimeOfDay.fromDateTime(DateTime.now()));
+
+    /*将选择日期显示出来*/
+    setState(() {
+     //String? apm = t?.period.toString() == 'DayPeriod.am' ? '上午' : '下午';
+      time = t.toString().substring(10, 15);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    /// Set to `true` to see the full possibilities of the iOS Developer Screen
     final bool runCupertinoApp = false;
     return SettingsList(
       sections: [
@@ -27,7 +65,7 @@ class Setting2 extends StatelessWidget {
         SettingsSection(
           title: Text('通知設定'),
           tiles: <SettingsTile>[
-            SettingsTile.navigation(
+            /*SettingsTile.navigation(
               leading: Icon(Icons.format_paint),
               title: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -35,7 +73,7 @@ class Setting2 extends StatelessWidget {
                     Text('每周目標天數 '),
                     dropdownButton(),
                   ]),
-            ),
+            ),*/
             SettingsTile.switchTile(
               onToggle: (value) {},
               initialValue: true,
@@ -43,12 +81,18 @@ class Setting2 extends StatelessWidget {
               title: Text('運動提醒'),
             ),
             SettingsTile.navigation(
-              leading: Icon(Icons.format_paint),
+              leading: Icon(Icons.access_time_filled),
               title: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('提醒時間'),
-                    dropdownButton(),
+                    Text('提醒時間: $time'),
+                    TextButton(
+                      onPressed: () {
+                        showTime(context);
+                      },
+                      child: Text("選擇時間"),
+                    )
+                    //dropdownButton(),
                   ]),
             ),
           ],
@@ -56,24 +100,62 @@ class Setting2 extends StatelessWidget {
         SettingsSection(
           title: Text('運動設定'),
           tiles: <SettingsTile>[
-            SettingsTile.navigation(
-              leading: Icon(Icons.format_paint),
-              title: Row(
+            /*動作介紹時間，目前是手動控制。待考慮
+           SettingsTile.navigation(
+                leading: Icon(Icons.format_paint),
+                title: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('休息秒數'),
-                    dropdownButton(),
-                  ]),
-            ),
+                    Text('休息秒數 '),
+                    SizedBox(
+                      width: 50,
+                      child: TextField(
+                        controller: myController,
+                        keyboardType: TextInputType.number,
+                        maxLines: 1,
+                        maxLength: 3,
+                        decoration: InputDecoration(
+                          hintText: restTime.toString(),
+                        ),
+                        onChanged: (String value) {
+                          //print("${value}+++++++++++++");
+                          //print("${myController.text}");
+                          setState(() {
+                            restTime = int.parse(value);
+                          });
+                          //RestTime().setTime(restTime);
+                        },
+                      ),
+                    ),
+                  ],
+                )),*/
             SettingsTile.navigation(
-              leading: Icon(Icons.format_paint),
-              title: Row(
+                leading: Icon(Icons.timer),
+                title: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('動作解說秒數 '),
-                    dropdownButton(),
-                  ]),
-            ),
+                    SizedBox(
+                      width: 55,
+                      child: TextField(
+                        controller: myController,
+                        keyboardType: TextInputType.number,
+                        maxLines: 1,
+                        maxLength: 3,
+                        decoration: InputDecoration(
+                          hintText: restTime.toString(),
+                          suffixText: "秒",
+                        ),
+                        onChanged: (String value) {
+                          setState(() {
+                            restTime = int.parse(value);
+                          });
+                          //RestTime().setTime(restTime);
+                        },
+                      ),
+                    ),
+                  ],
+                )),
           ],
         ),
       ],

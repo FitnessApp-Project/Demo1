@@ -16,9 +16,11 @@ class PoseIntro extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(
           iconSize: 30,
-          icon: const Icon(Icons.cancel, size: 30.0, color: Colors.white),
+          icon: Icon(Icons.cancel, size: 30.0, color: Colors.white),
           onPressed: () {
-
+            debugPrint('Cancel');
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => PoseList()));
           },
         ),
         title: Text(record.poseName),
