@@ -5,9 +5,11 @@ import '../cc/setting/Setting2.dart';
 import '../cc/sports menu/poseIntro.dart';
 import '../cc/sports menu/undoneList.dart';
 
+/*
 void main() {
   runApp(const RestTime());
 }
+*/
 
 class RestTime extends StatefulWidget {
   const RestTime({Key? key}) : super(key: key);
@@ -17,7 +19,7 @@ class RestTime extends StatefulWidget {
 }
 
 class _RestTimeState extends State<RestTime> {
-  int count=0;
+  int count = 0;
   bool a = false;
   late Timer timer;
 
@@ -40,10 +42,9 @@ class _RestTimeState extends State<RestTime> {
   @override
   void initState() {
     super.initState();
-    count=Setting2().getRestTime();
+    count = Setting2().getRestTime();
     _getTime();
   }
-
 
   @override
   Widget build(BuildContext context) {

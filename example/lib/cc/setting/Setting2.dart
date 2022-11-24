@@ -5,6 +5,9 @@ import 'package:settings_ui/settings_ui.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'notify/screens/second_screen.dart';
+import 'notify/services/local_notification_service.dart';
+
 String value = "3";
 
 class Setting2 extends StatefulWidget {
@@ -21,8 +24,8 @@ class Setting2 extends StatefulWidget {
 class _Setting2State extends State<Setting2> {
   final TextEditingController myController = new TextEditingController();
   static int restTime = 5; //運動間休息預設
-  static int noticeTime = 5; //課表介紹時間?
-  static String time="20:00";
+  static String time = "20:00"; //預設通知時間
+  late final LocalNotificationService service;
 
   int getRestTime() {
     return restTime;
@@ -30,6 +33,9 @@ class _Setting2State extends State<Setting2> {
 
   @override
   initState() {
+    service = LocalNotificationService();
+    service.intialize();
+    listenToNotification();
     super.initState();
   }
 
@@ -39,14 +45,28 @@ class _Setting2State extends State<Setting2> {
 
     /*将选择日期显示出来*/
     setState(() {
-     //String? apm = t?.period.toString() == 'DayPeriod.am' ? '上午' : '下午';
+      //String? apm = t?.period.toString() == 'DayPeriod.am' ? '上午' : '下午';
       time = t.toString().substring(10, 15);
     });
   }
 
+  void listenToNotification() =>
+      service.onNotificationClick.stream.listen(onNoticationListener);
+
+  void onNoticationListener(String? payload) {
+    if (payload != null && payload.isNotEmpty) {
+      print('payload $payload');
+
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: ((context) => SecondScreen(payload: payload))));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final bool runCupertinoApp = false;
+    //final bool runCupertinoApp = false;
     return SettingsList(
       sections: [
         SettingsSection(
@@ -65,20 +85,18 @@ class _Setting2State extends State<Setting2> {
         SettingsSection(
           title: Text('通知設定'),
           tiles: <SettingsTile>[
-            /*SettingsTile.navigation(
-              leading: Icon(Icons.format_paint),
-              title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('每周目標天數 '),
-                    dropdownButton(),
-                  ]),
-            ),*/
             SettingsTile.switchTile(
               onToggle: (value) {},
               initialValue: true,
               leading: Icon(Icons.format_paint),
               title: Text('運動提醒'),
+              trailing: ElevatedButton(
+                onPressed: () async {
+                  await service.showNotification(
+                      id: 0, title: 'Notification Title', body: 'Some body');
+                },
+                child: const Text('Local Notification'),
+              ),
             ),
             SettingsTile.navigation(
               leading: Icon(Icons.access_time_filled),
