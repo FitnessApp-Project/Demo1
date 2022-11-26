@@ -1,10 +1,9 @@
-/*
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:body_detection_example/test/game/components/GameIn_image.dart';
-import 'package:body_detection_example/test/game/components/GameIn_operate.dart';
+import '../game/components/GameIn_image.dart';
+import '../game/components/GameIn_operate.dart';
 import '../helpers/Constants.dart';
 
 
@@ -36,4 +35,3 @@ class GameIn extends StatelessWidget {
     );
   }
 }
-*/

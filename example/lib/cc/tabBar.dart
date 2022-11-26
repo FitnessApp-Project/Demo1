@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'Sports menu/homepage.dart';
 import 'package:body_detection_example/Exercising/detection/detection.dart';
 import 'game/GameIn.dart';
+import 'game/Play.dart';
 import 'setting/Setting2.dart';
 
 import 'calendar/CalendarPage.dart';
@@ -51,7 +52,7 @@ class tabBar extends StatelessWidget {
             appBar: AppBar(
               leading: const Center(
                 child: Text(
-                  'Demooooooo',
+                  'Demo',
                   style: TextStyle(
                     fontSize: 20,
                     color: Colors.white,
@@ -84,10 +85,10 @@ class tabBar extends StatelessWidget {
               child: TabBarView(children: [
                 HomePage(),
                 TableEventsExample(),
-                //GameIn(),
+                GameIn(),
                 //Detection(),
                 //HomePage(),
-                HomePage(),
+                //HomePage(),
                 Setting2(),
               ]),
             )),
