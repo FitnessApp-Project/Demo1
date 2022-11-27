@@ -13,6 +13,8 @@ const Color poseWrong = Color(0xFFF82F2F);//white
 Color poseFrameColor = kPrimaryColor;//white
 
 
+double getY=0;
+
 // Strings
 const appTitle = "FitnessApp";
 const pinCodeHintText = "Pin Code";

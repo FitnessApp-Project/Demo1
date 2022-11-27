@@ -47,8 +47,8 @@ class MyApp extends StatelessWidget {
             ),
           )),
      //home: const WelcomeScreen(),
-      //home:  PoseList(),
-      home: tabBar(),
+      home:  Play(),
+     // home: tabBar(),
     );
   }
 }
