@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -9,8 +10,27 @@ import '../Play.dart';
 const double windowWidth = 1024;
 const double windowHeight = 800;
 
-class GameIn_operate extends StatelessWidget {
-  const GameIn_operate({super.key});
+class GameIn_operate extends StatefulWidget {
+  GameIn_operate({Key? key}) : super(key: key);
+
+  @override
+  State<GameIn_operate> createState() => _GameIn_operateState();
+}
+
+class _GameIn_operateState extends State<GameIn_operate> {
+  late Timer timer;
+  int count = 5;
+
+  @override
+  void didChangeDependencies() {
+    var duration = Duration(milliseconds: 100);
+    timer = Timer.periodic(duration, (timer) {
+      setState(() {
+        score;
+      });
+    });
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,54 +40,17 @@ class GameIn_operate extends StatelessWidget {
         child: Column(
           children: [
             Text(
-              '最高分數:',
+              '最高分數: $score',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            Text(
-              '分數',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+
             Padding(padding: EdgeInsets.all(10)),
             Row(
               children: [
-                /* Expanded(
-                flex: 1,
-                child: IconButton(
-                  iconSize: 80.0,
-                  padding: EdgeInsets.zero,
-                  icon: const Icon(Icons.arrow_left,
-                      color: Colors.white,
-                      shadows: [
-                        BoxShadow(
-                          blurRadius: 8.0,
-                          color: Colors.grey,
-                        ),
-                      ]),
-                  onPressed: () {
-                    print('按下');
-                  },
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child: IconButton(
-                  iconSize: 80.0,
-                  padding: EdgeInsets.zero,
-                  icon: const Icon(
-                    Icons.arrow_right,
-                    color: Colors.white,
-                  ),
-                  onPressed: () => print('按下'),
-                ),
-              ),*/
                 Expanded(
                   flex: 1,
                   child: Container(
@@ -87,6 +70,8 @@ class GameIn_operate extends StatelessWidget {
                       ),
                       onPressed: () {
                         print('按下開始');
+                        print(score);
+
                         Navigator.of(context, rootNavigator: true).push(
                             CupertinoPageRoute(builder: (BuildContext context) {
                           return Play();

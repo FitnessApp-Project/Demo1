@@ -20,6 +20,7 @@ class tabBar extends StatelessWidget {
           Tab(
             icon: Icon(Icons.home_outlined),
             text: '主頁',
+
           ),
           Tab(
             icon: Icon(Icons.pending_actions_outlined),

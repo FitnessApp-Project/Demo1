@@ -13,14 +13,13 @@ const double windowHeight = 800;
 class GameIn extends StatelessWidget {
   const GameIn({super.key});
 
+
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
           backgroundColor: kPrimaryColor,
-          // appBar: AppBar(
-          //   backgroundColor: kPrimaryColor,
-          // ),
           body: Center(
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,

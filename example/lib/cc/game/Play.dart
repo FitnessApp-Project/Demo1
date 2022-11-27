@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import '../game/game_detection.dart';
 import 'package:body_detection_example/cc/game/GameIn.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,9 +16,10 @@ class Play extends StatefulWidget {
   State<Play> createState() => _PlayState();
 }
 
-const double stageSize = 500;
+const double stageHeight = 500;
 const double wallHeight = 300;
 const double size = 30;
+double stageWidth = 0;
 
 enum Direction {
   up,
@@ -31,58 +33,47 @@ enum GameState {
 }
 
 class _PlayState extends State<Play> {
-  double wallx = 0;
+  double wallx = stageWidth;
   Direction direction = Direction.none;
   double Y = 400;
   GameState gameState = GameState.Running;
   late Timer timer;
   Detection detection = new Detection();
-  int score = 0;
   double wallWidth = 50;
-
+  int newScore=0;
 
   @override
-  void initState(){
+  void initState() {
     gameState = GameState.Running;
-
+    wallx = stageWidth;
+    newScore = 0;
   }
 
   @override
   void didChangeDependencies() {
     var duration = Duration(milliseconds: 5);
     timer = Timer.periodic(duration, (timer) {
-      double newY2 = getY;
-      print("${getY}......................");
-      double newY = newY2;
+      double newY = getY;
       Direction newdir = direction;
       GameState newstate = gameState;
 
-      /*switch (direction) {
-        case Direction.up:
-          newY--;
-          if (newY < 150) {
-            newdir = Direction.down;
-          }
-          break;
-        case Direction.down:
-          newY++;
-          if (newY > stageSize) {
-            newdir = Direction.none;
-          }
-          break;
-      }*/
-      if (wallx < size && Y >= stageSize - wallHeight ) {
-        print("game state dead");
+      if (wallx < size && Y >= stageHeight - wallHeight) {
         setState(() {
-          newstate = GameState.Dead;
+          if(newScore>score){
+            score=newScore;
+          }
+          timer.cancel();
+          detection.stopstream();
+          print("$score +++++++++++++++");
+          Navigator.of(context).pop();
+          print("$score-----------");
         });
-
       }
       setState(() {
-        if (wallx <=  wallWidth) {
-          score++;
+        if (wallx <= 0) {
+          newScore++;
         }
-        wallx = (wallx - 1 + stageSize) % stageSize;
+        wallx = (wallx - 1 + stageWidth) % stageWidth;
         Y = newY;
         direction = newdir;
         gameState = newstate;
@@ -93,6 +84,7 @@ class _PlayState extends State<Play> {
 
   @override
   Widget build(BuildContext context) {
+    stageWidth = MediaQuery.of(context).size.width;
     return Scaffold(
         backgroundColor: Color.fromRGBO(255, 234, 203, 1.0),
         appBar: AppBar(
@@ -104,93 +96,72 @@ class _PlayState extends State<Play> {
             onPressed: () {
               timer.cancel();
               detection.stopstream();
-
-              Navigator.of(context, rootNavigator: true)
-                  .push(CupertinoPageRoute(builder: (BuildContext context) {
-                return tabBar();
-              }));
+              /*         Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => tabBar()));*/
+              Navigator.of(context).pop();
             },
           ),
         ),
-        body: gameState == GameState.Running
-            ? GestureDetector(
-                onTap: () {
-                  setState(() {
-                    //direction = Direction.up;
-                    timer.cancel();
-                    detection.stopstream();
-                  });
-                },
-                child: Center(
-                  child: Column(
+        body: GestureDetector(
+          child: Center(
+            child: Column(
+              children: [
+                Container(
+                  height: 150,
+                  width: MediaQuery.of(context).size.width,
+                  margin:
+                      EdgeInsets.only(top: 10, left: 40, right: 40, bottom: 0),
+                  padding: EdgeInsets.only(bottom: 0),
+                  decoration: BoxDecoration(
+                    color: Color.fromRGBO(244, 189, 122, 1.0),
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                  ),
+                  child: Text("分數 $newScore"),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: stageHeight,
+                  decoration: BoxDecoration(
+                    //color: Colors.red,
+                    border: Border(
+                        bottom: BorderSide(
+                            color: kPrimaryDarkColor,
+                            width: 8,
+                            style: BorderStyle.solid)),
+                  ),
+                  child: Stack(
                     children: [
-                      Container(
-                        height: 150,
-                        width: MediaQuery.of(context).size.width,
-                        margin: EdgeInsets.only(
-                            top: 10, left: 40, right: 40, bottom: 0),
-                        padding: EdgeInsets.only(bottom: 0),
-                        decoration: BoxDecoration(
-                          color: Color.fromRGBO(244, 189, 122, 1.0),
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                        ),
-                        child: Text("分數 $score"),
+                      Positioned(
+                        bottom: 0,
+                        left: 0,
+                        child: detection,
                       ),
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: stageSize,
-                        decoration: BoxDecoration(
-                          color: Colors.red,
-                          border: Border(
-                              bottom: BorderSide(
-                                  color: kPrimaryDarkColor,
-                                  width: 8,
-                                  style: BorderStyle.solid)),
-                        ),
-                        child: Stack(
-                          children: [
-                            Positioned(
-                              bottom: 0,
-                              left: 0,
-                              child: detection,
-                            ),
-                            Positioned.fromRect(
-                                rect: Rect.fromCenter(
-                                    center: Offset(0, Y - size / 2),
-                                    width: size,
-                                    height: size),
-                                child: Container(
-                                  color: Colors.orange,
-                                )),
-                            Positioned.fromRect(
-                                rect: Rect.fromCenter(
-                                    center: Offset(wallx, MediaQuery.of(context).size.width),
-                                    width: wallWidth,
-                                    height: wallHeight),
-                                child: Container(
-                                  color: Colors.green,
-                                  child: Text('${wallx.toString()}/ ${stageSize.toString()}/ ${wallHeight.toString()}'),
-                                ))
-                          ],
-                        ),
-                        //  ),
-                      ),
+                      Positioned.fromRect(
+                          rect: Rect.fromCenter(
+                              center: Offset(0, Y - size / 2),
+                              width: size,
+                              height: size),
+                          child: Container(
+                            color: Colors.orange,
+                          )),
+                      Positioned.fromRect(
+                          rect: Rect.fromCenter(
+                              center: Offset(
+                                  wallx, MediaQuery.of(context).size.width),
+                              width: wallWidth,
+                              height: wallHeight),
+                          child: Container(
+                            color: Colors.green,
+                            child: Text(
+                                '${wallx.toString()}/ ${stageWidth.toString()}/ ${wallHeight.toString()}'),
+                          ))
                     ],
                   ),
+                  //  ),
                 ),
-              )
-            : Center(
-                child: Container(
-                  child: TextButton(
-                    onPressed: () {
-                      setState(() {
-                        gameState = GameState.Running;
-                      });
-                    },
-                    //child: Text(Y.toString()),
-                    child: Text("Game over"),
-                  ),
-                ),
-              ));
+              ],
+            ),
+          ),
+        ));
   }
 }

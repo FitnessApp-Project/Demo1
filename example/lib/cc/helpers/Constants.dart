@@ -14,6 +14,7 @@ Color poseFrameColor = kPrimaryColor;//white
 
 
 double getY=0;
+int score=0;
 
 // Strings
 const appTitle = "FitnessApp";
