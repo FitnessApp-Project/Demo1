@@ -1,8 +1,9 @@
 import 'dart:isolate';
-import 'package:body_detection_example/cc/sports%20menu/pose%20listV2%20for%20test.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:body_detection_example/cc/sports menu/poselist.dart';
+
+import 'action_list.dart';
 
 const double BoxHeight = 200.0;
 const double gap = 5.0;
@@ -20,8 +21,6 @@ var boxlabel = <String>[
   '簡單訓練表',
   '困難訓練課表',
 ];
-
-
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -54,15 +53,15 @@ class MyItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = Colors.orange[200 + 100 * (index + 1)];
-    return InkWell(
-      child: Container(
-        //alignment: Alignment.center,
-        height: 120,
-        margin: EdgeInsets.only(left: 50, top: 20, right: 50, bottom: 0),
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.all(Radius.circular(20)),
-        ),
+    return Container(
+      //alignment: Alignment.center,
+      height: 120,
+      margin: EdgeInsets.only(left: 50, top: 20, right: 50, bottom: 0),
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.all(Radius.circular(20)),
+      ),
+      child: InkWell(
         child: Stack(
           alignment: Alignment.centerLeft,
           children: [
@@ -93,12 +92,21 @@ class MyItem extends StatelessWidget {
             ),
           ],
         ),
+
+        onTap: () {
+          if(index==0){
+            print("list V2");
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => ActionList()));
+          }else{
+            print("list V1");
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => PoseList()));
+          }
+          // print("Click event on Container" + index.toString());
+
+        },
       ),
-      onTap: () {
-        print("Click event on Container" + index.toString());
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => PoseListV2ForTest()));
-      },
     );
   }
 }

@@ -1,27 +1,10 @@
 import 'dart:async';
-import 'package:body_detection/models/pose.dart';
 import 'package:body_detection_example/cc/sports%20menu/undoneList.dart';
-import 'package:camera/camera.dart';
+import 'package:body_detection_example/cc/tabBar.dart';
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
-
 import '../../cc/helpers/Constants.dart';
-import '../../cc/sports menu/poseIntro.dart';
 import '../../Exercising/detection/detection.dart';
 import '../restTime.dart';
-import 'dart:io';
-import 'dart:typed_data';
-import 'package:body_detection/models/image_result.dart';
-import 'package:body_detection/models/pose.dart';
-import 'package:body_detection/models/body_mask.dart';
-import 'package:body_detection/png_image.dart';
-import 'package:camera/camera.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:flutter/material.dart';
-import 'dart:ui' as ui;
-import 'package:body_detection/body_detection.dart';
-import 'package:permission_handler/permission_handler.dart';
-import '../../Exercising/detection/pose_mask_painter.dart';
 
 class ExerciseFrame extends StatefulWidget {
   const ExerciseFrame({Key? key}) : super(key: key);
@@ -29,7 +12,7 @@ class ExerciseFrame extends StatefulWidget {
   @override
   State<ExerciseFrame> createState() => _FrameState();
 
-  void stopTime(){
+  void stopTime() {
     _FrameState().timer.cancel();
   }
 }
@@ -38,7 +21,7 @@ class _FrameState extends State<ExerciseFrame> {
   int count = 0;
   bool a = false;
   late Timer timer;
-  Detection detection=Detection();
+  Detection detection = Detection();
 
   @override
   void initState() {
@@ -56,8 +39,13 @@ class _FrameState extends State<ExerciseFrame> {
       } else {
         timer.cancel();
         detection.stopstream();
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => RestTime()));
+        if(UndoneList().getrecord()==UndoneList().getLastrecord()){
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => tabBar()));
+        }else{
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => RestTime()));
+        }
       }
     });
     return count;
@@ -119,7 +107,7 @@ class _FrameState extends State<ExerciseFrame> {
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [
-            Positioned(bottom: 0, left: 0, child:detection),
+            Positioned(bottom: 0, left: 0, child: detection),
             //半圓結構
             Positioned(
               top: -310,

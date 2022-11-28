@@ -19,6 +19,9 @@ class UndoneList {
   poseRecord getNextrecord() {
       return _records.records[1];
   }
+  poseRecord getLastrecord() {
+    return _records.records.last;
+  }
 
  void removefirst() {
     print("rencent data: " + _records.records.first.poseName);

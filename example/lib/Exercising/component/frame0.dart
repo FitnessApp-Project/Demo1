@@ -1,3 +1,4 @@
+/*
 import 'dart:async';
 import 'package:body_detection/models/pose.dart';
 import 'package:body_detection_example/cc/sports%20menu/undoneList.dart';
@@ -98,8 +99,10 @@ class _FrameState extends State<ExerciseFrame> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                /*Text('總金額：' + '9999', style: TextStyle(color: Colors.black)),
                 */
+/*Text('總金額：' + '9999', style: TextStyle(color: Colors.black)),
+                *//*
+
                 Image.asset('assets/images/IMG_20200704_134015.jpg'),
                 Text('動作解說：' + 'XXXXX',
                     style: TextStyle(color: Colors.black, fontSize: 20)),
@@ -230,7 +233,8 @@ class _FrameState extends State<ExerciseFrame> {
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [
-            /*Positioned(
+            */
+/*Positioned(
               child: Container(
                 padding:EdgeInsets.only(top: 95),
                 //alignment: AlignmentDirectional.bottomCenter,
@@ -245,7 +249,8 @@ class _FrameState extends State<ExerciseFrame> {
                   ),
                 ),
               ),
-            ),*/
+            ),*//*
+
             Positioned(
               top: -280,
               child: Container(
@@ -320,3 +325,4 @@ class _FrameState extends State<ExerciseFrame> {
   }
 }
 
+*/

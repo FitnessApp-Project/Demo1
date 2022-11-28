@@ -3,10 +3,7 @@ import 'package:body_detection_example/cc/sports%20menu/poseImage.dart';
 import 'package:body_detection_example/cc/sports%20menu/poseIntro.dart';
 import 'package:body_detection_example/cc/sports%20menu/undoneList.dart';
 import 'package:flutter/material.dart';
-import 'package:body_detection_example/cc/poseList/Record.dart';
-import 'package:body_detection_example/cc/poseList/RecordList.dart';
-import 'package:body_detection_example/cc/poseList/RecordService.dart';
-import 'package:body_detection_example/cc/Sports menu/DetailsPage.dart';
+
 import 'package:body_detection_example/cc/helpers/Constants.dart';
 import '../../Exercising/detection/detection.dart';
 import 'package:body_detection_example/cc/poseList/poseRecord.dart';

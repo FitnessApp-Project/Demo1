@@ -1,3 +1,4 @@
+/*
 import 'dart:async';
 import 'package:body_detection_example/cc/poseList/Record.dart';
 import 'package:body_detection_example/cc/sports%20menu/poseIntro.dart';
@@ -11,11 +12,13 @@ import '../cc/sports menu/undoneList.dart';
 import '../Exercising/detection//detection.dart';
 import 'component/frame.dart';
 
+*/
 /*
 void main() {
   runApp(const DetectionInitial());
 }
-*/
+*//*
+
 
 class DetectionInitial extends StatefulWidget {
   late poseRecord record;
@@ -68,3 +71,4 @@ class _DetectionInitialState extends State<DetectionInitial> {
   }
 }
 
+*/

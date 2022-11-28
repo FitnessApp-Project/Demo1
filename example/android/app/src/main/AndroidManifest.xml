@@ -2,7 +2,7 @@
     package="com.u0x48lab.body_detection_example">
     <uses-permission android:name="android.permission.CAMERA"/>
    <application
-        android:label="運動AI+"
+        android:label="AI運動+ Demo"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

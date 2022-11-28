@@ -18,9 +18,9 @@ packages:
   body_detection:
     dependency: "direct main"
     description:
-      path: ".."
-      relative: true
-    source: path
+      name: body_detection
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "0.0.3"
   boolean_selector:
     dependency: transitive

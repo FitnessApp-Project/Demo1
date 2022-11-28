@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:body_detection/models/image_result.dart';
 import 'package:body_detection/models/pose.dart';
-
 import 'package:body_detection/png_image.dart';
 import 'package:camera/camera.dart';
 import 'package:file_picker/file_picker.dart';
