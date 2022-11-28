@@ -1,4 +1,5 @@
 import 'dart:isolate';
+import 'package:body_detection_example/cc/sports%20menu/pose%20listV2%20for%20test.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:body_detection_example/cc/sports menu/poselist.dart';
@@ -96,7 +97,7 @@ class MyItem extends StatelessWidget {
       onTap: () {
         print("Click event on Container" + index.toString());
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => PoseList()));
+            context, MaterialPageRoute(builder: (context) => PoseListV2ForTest()));
       },
     );
   }

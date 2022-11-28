@@ -21,31 +21,27 @@ const double wallHeight = 300;
 const double size = 30;
 double stageWidth = 0;
 
-enum Direction {
-  up,
-  down,
-  none,
-}
-
 enum GameState {
   Running,
   Dead,
 }
 
 class _PlayState extends State<Play> {
-  double wallx = stageWidth;
-  Direction direction = Direction.none;
+  late double wallx;
+  late double wall2x;
   double Y = 400;
   GameState gameState = GameState.Running;
   late Timer timer;
   Detection detection = new Detection();
   double wallWidth = 50;
-  int newScore=0;
+  int newScore = 0;
+  double move = 2;
 
   @override
   void initState() {
     gameState = GameState.Running;
     wallx = stageWidth;
+    wall2x = stageWidth;
     newScore = 0;
   }
 
@@ -54,10 +50,10 @@ class _PlayState extends State<Play> {
     var duration = Duration(milliseconds: 5);
     timer = Timer.periodic(duration, (timer) {
       double newY = getY;
-      Direction newdir = direction;
       GameState newstate = gameState;
 
-      if (wallx < size && Y >= stageHeight - wallHeight) {
+      //死亡判斷
+      /* if (wallx < size && Y >= stageHeight - wallHeight) {
         setState(() {
           if(newScore>score){
             score=newScore;
@@ -68,14 +64,15 @@ class _PlayState extends State<Play> {
           Navigator.of(context).pop();
           print("$score-----------");
         });
-      }
+      }*/
+
       setState(() {
-        if (wallx <= 0) {
+        if (wallx.truncate() <= 0) {
           newScore++;
         }
-        wallx = (wallx - 1 + stageWidth) % stageWidth;
+        wallx = (wallx - move) % stageWidth;
+        wall2x = (wall2x - move) % stageWidth;
         Y = newY;
-        direction = newdir;
         gameState = newstate;
       });
     });
@@ -86,82 +83,88 @@ class _PlayState extends State<Play> {
   Widget build(BuildContext context) {
     stageWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-        backgroundColor: Color.fromRGBO(255, 234, 203, 1.0),
-        appBar: AppBar(
-          toolbarHeight: 50,
-          backgroundColor: kPrimaryColor,
-          leading: IconButton(
-            iconSize: 30,
-            icon: Icon(Icons.arrow_back, size: 30.0, color: Colors.white),
-            onPressed: () {
-              timer.cancel();
-              detection.stopstream();
-              /*         Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => tabBar()));*/
-              Navigator.of(context).pop();
-            },
-          ),
+      backgroundColor: Color.fromRGBO(255, 234, 203, 1.0),
+      appBar: AppBar(
+        toolbarHeight: 50,
+        backgroundColor: kPrimaryColor,
+        leading: IconButton(
+          iconSize: 30,
+          icon: Icon(Icons.arrow_back, size: 30.0, color: Colors.white),
+          onPressed: () {
+            timer.cancel();
+            detection.stopstream();
+            Navigator.of(context).pop();
+          },
         ),
-        body: GestureDetector(
-          child: Center(
-            child: Column(
-              children: [
-                Container(
-                  height: 150,
-                  width: MediaQuery.of(context).size.width,
-                  margin:
-                      EdgeInsets.only(top: 10, left: 40, right: 40, bottom: 0),
-                  padding: EdgeInsets.only(bottom: 0),
-                  decoration: BoxDecoration(
-                    color: Color.fromRGBO(244, 189, 122, 1.0),
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                  ),
-                  child: Text("分數 $newScore"),
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: stageHeight,
-                  decoration: BoxDecoration(
-                    //color: Colors.red,
-                    border: Border(
-                        bottom: BorderSide(
-                            color: kPrimaryDarkColor,
-                            width: 8,
-                            style: BorderStyle.solid)),
-                  ),
-                  child: Stack(
-                    children: [
-                      Positioned(
-                        bottom: 0,
-                        left: 0,
-                        child: detection,
-                      ),
-                      Positioned.fromRect(
-                          rect: Rect.fromCenter(
-                              center: Offset(0, Y - size / 2),
-                              width: size,
-                              height: size),
-                          child: Container(
-                            color: Colors.orange,
-                          )),
-                      Positioned.fromRect(
-                          rect: Rect.fromCenter(
-                              center: Offset(
-                                  wallx, MediaQuery.of(context).size.width),
-                              width: wallWidth,
-                              height: wallHeight),
-                          child: Container(
-                            color: Colors.green,
-                            child: Text(
-                                '${wallx.toString()}/ ${stageWidth.toString()}/ ${wallHeight.toString()}'),
-                          ))
-                    ],
-                  ),
-                  //  ),
-                ),
-              ],
+      ),
+      body: Center(
+        child: Column(
+          children: [
+            Container(
+              height: 150,
+              width: MediaQuery.of(context).size.width,
+              margin: EdgeInsets.only(top: 10, left: 40, right: 40, bottom: 0),
+              decoration: BoxDecoration(
+                color: Color.fromRGBO(244, 189, 122, 1.0),
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+              ),
+              child: Text("分數 $newScore $move"),
             ),
-          ),
-        ));
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: stageHeight,
+              decoration: BoxDecoration(
+                //color: Colors.red,
+                border: Border(
+                    bottom: BorderSide(
+                        color: kPrimaryDarkColor,
+                        width: 8,
+                        style: BorderStyle.solid)),
+              ),
+              child: Stack(
+                children: [
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    child: detection,
+                  ),
+                  Positioned.fromRect(
+                      rect: Rect.fromCenter(
+                          center: Offset(0, Y - size / 2),
+                          width: size,
+                          height: size),
+                      child: Container(
+                        color: Colors.orange,
+                      )),
+                  Positioned.fromRect(
+                      rect: Rect.fromCenter(
+                          center:
+                              Offset(wallx, MediaQuery.of(context).size.width),
+                          width: wallWidth,
+                          height: wallHeight),
+                      child: Container(
+                        color: Colors.green,
+                        child: Text(
+                            '${wallx.toString()}/ ${stageWidth.toString()}/ ${wallHeight.toString()}'),
+                      )),
+                  Positioned.fromRect(
+                      rect: Rect.fromCenter(
+                          center:
+                          Offset(wall2x, 0),
+                          width: wallWidth,
+                          height: wallHeight),
+                      child: Container(
+                        color: Colors.green,
+                        child: Text(
+                            '${wall2x.toString()}/ ${stageWidth.toString()}/ ${wallHeight.toString()}'),
+                      ))
+                ],
+              ),
+              //  ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

@@ -12,7 +12,6 @@ import '../../Exercising/detection/detection.dart';
 import 'package:body_detection_example/cc/poseList/poseRecord.dart';
 import 'package:body_detection_example/cc/poseList/poseRecordList.dart';
 import 'package:body_detection_example/cc/poseList/poseRecordService.dart';
-
 import '../tabBar.dart';
 
 class PoseList extends StatefulWidget {

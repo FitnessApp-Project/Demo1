@@ -24,11 +24,13 @@ dependencies:
   timezone: ^0.8.0
   rxdart: ^0.27.4
 
+  pausable_timer: ^1.0.0+6
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints:  ^1.0.0
+
 
 flutter:
   uses-material-design: true
