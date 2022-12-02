@@ -43,3 +43,13 @@ flutter:
     - assets/images/
     - assets/icons/
     - assets/data/
+    - assets/images/
+    - assets/images/squat/
+    - assets/images/legpullover/
+    - assets/images/sidelegraise/
+    - assets/images/kneelinglegraise/
+    - assets/images/pyramidStretch/
+    - assets/images/lunge/
+    - assets/images/statedForwardBendStretch/
+    - assets/icons/
+    - assets/data/trainMenuForLeg.json

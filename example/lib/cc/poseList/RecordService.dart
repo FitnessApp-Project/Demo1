@@ -6,7 +6,8 @@ import 'dart:convert';
 class RecordService {
 
   Future<String> _loadRecordsAsset() async {
-    return await rootBundle.loadString('assets/data/records.json');
+    // return await rootBundle.loadString('assets/data/records.json');
+    return await rootBundle.loadString('assets/data/trainMenuForLeg.json');
   }
 
   Future<RecordList> loadRecords() async {

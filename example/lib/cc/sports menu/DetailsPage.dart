@@ -1,3 +1,4 @@
+/*
 import 'package:flutter/material.dart';
 import 'package:body_detection_example/cc/poseList/Record.dart';
 
@@ -72,4 +73,4 @@ class DetailPage extends StatelessWidget {
         )
     );
   }
-}
+}*/

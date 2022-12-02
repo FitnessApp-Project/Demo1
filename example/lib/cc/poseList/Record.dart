@@ -1,25 +1,19 @@
 class Record {
   String name;
-  String address;
-  String contact;
+  String context;
   String photo;
-  String url;
 
   Record({
     required this.name,
-    required this.address,
-    required this.contact,
+    required this.context,
     required this.photo,
-    required this.url
   });
 
   factory Record.fromJson(Map<String, dynamic> json){
-    return Record(
+    return new Record(
         name: json['name'],
-        address: json['address'],
-        contact: json ['contact'],
-        photo: json['photo'],
-        url: json['url']
+        context: json ['context'],
+        photo: json['photo']
     );
   }
 }
