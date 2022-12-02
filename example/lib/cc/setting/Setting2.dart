@@ -19,10 +19,10 @@ class Setting2 extends StatefulWidget {
   int getRestTime() {
     return _Setting2State().getRestTime();
   }
-  TimeOfDay? getNotifyTime(){
+
+  TimeOfDay? getNotifyTime() {
     return _Setting2State().getNotifyTime();
   }
-
 }
 
 class _Setting2State extends State<Setting2> {
@@ -31,16 +31,23 @@ class _Setting2State extends State<Setting2> {
   //static DateTime notifytime = DateTime.utc(DateTime.now().hour,DateTime.now().minute, DateTime.now().second); //預設通知時間
 
   late final LocalNotificationService service;
-  //TimeOfDay t= TimeOfDay.fromDateTime(DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day,20,0,0));
-  TimeOfDay t= TimeOfDay.fromDateTime(DateTime.now());
+  TimeOfDay t = TimeOfDay.fromDateTime(DateTime(
+      DateTime.now().year, DateTime.now().month, DateTime.now().day, 20, 0, 0));
+  bool isSwitched = false;
+
+  //TimeOfDay t= TimeOfDay.fromDateTime(DateTime.now());
   static String? time; //預設通知時間
 
   int getRestTime() {
     return restTime;
   }
 
-  TimeOfDay? getNotifyTime(){
+  TimeOfDay? getNotifyTime() {
     return t;
+  }
+
+  void showNotify() async {
+    await service.showNotification(id: 0, title: '運動提醒', body: time.toString());
   }
 
   @override
@@ -53,8 +60,9 @@ class _Setting2State extends State<Setting2> {
   }
 
   Future<TimeOfDay?> selectTime(context) async {
-     t = (await showTimePicker(
-        context: context, initialTime: TimeOfDay.fromDateTime(DateTime.now())))!;
+    t = (await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.fromDateTime(DateTime.now())))!;
 
     /*将选择日期显示出来*/
     setState(() {
@@ -99,20 +107,31 @@ class _Setting2State extends State<Setting2> {
           title: Text('通知設定'),
           tiles: <SettingsTile>[
             SettingsTile.switchTile(
-              onToggle: (value) {},
-              initialValue: true,
+              initialValue: isSwitched,
+              //switchValue: isSwitched,
+              onToggle: (value) async {
+                setState(() {
+                  isSwitched = value;
+                });
+                if(value==true){
+                  await service.showNotification(
+                      id: 0, title: '運動提醒', body: time.toString());
+                }
+
+              },
               leading: Icon(Icons.share_arrival_time_outlined),
               title: Text('運動提醒'),
-              trailing: ElevatedButton(
+
+              /*trailing: ElevatedButton(
                 onPressed: () async {
                   await service.showNotification(
-                      id: 0, title: 'Notification Title', body: 'Some body');
+                      id: 0, title: '運動提醒', body:time.toString() );
                 },
                 child: const Text('Local Notification'),
-              ),
+              ),*/
             ),
             SettingsTile.navigation(
-             // leading: Icon(Icons.access_time_filled),
+              // leading: Icon(Icons.access_time_filled),
               title: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

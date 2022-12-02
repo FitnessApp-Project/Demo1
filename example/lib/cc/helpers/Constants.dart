@@ -11,6 +11,7 @@ const Color kPrimaryLightColor = Color(0xFFF1E6FF);//white
 const Color poseRight = Color(0xFF05C41C);//white
 const Color poseWrong = Color(0xFFF82F2F);//white
 Color poseFrameColor = kPrimaryColor;//white
+Color poseForBorder = Colors.red;//white
 
 
 double getY=0;

@@ -10,16 +10,18 @@ import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
 import 'package:body_detection/body_detection.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'pose_mask_painter.dart';
-import 'counterPaint.dart';
-import 'outSidePaint.dart';
-import 'HalfCircle.dart';
+import 'package:body_detection_example/poseRecognition/counterPaint.dart';
+import 'package:body_detection_example/poseRecognition/outSidePaint.dart';
+import 'package:body_detection_example/poseRecognition/HalfCircle.dart';
+import 'package:body_detection_example/poseRecognition/pose_mask_painter.dart';
 import 'package:body_detection_example/cc/helpers/Constants.dart';
 import 'package:flutter/cupertino.dart';
-import 'provider.dart' as globals;
+import 'package:body_detection_example/poseRecognition/provider.dart'
+    as globals;
+import 'package:body_detection_example/Exercising/restTime.dart';
 
-class Detection extends StatefulWidget {
-  const Detection(
+class DetectionInitial extends StatefulWidget {
+  const DetectionInitial(
       {Key? key,
       required this.SportName,
       required this.number,
@@ -32,10 +34,10 @@ class Detection extends StatefulWidget {
   final String image;
 
   @override
-  State<Detection> createState() => _DetectionState();
+  State<DetectionInitial> createState() => _DetectionInitialState();
 }
 
-class _DetectionState extends State<Detection> {
+class _DetectionInitialState extends State<DetectionInitial> {
   Pose? _detectedPose;
   ui.Image? _maskImage;
   Image? _cameraImage;
@@ -47,7 +49,6 @@ class _DetectionState extends State<Detection> {
 
   @override
   void initState() {
-    super.initState();
     _startCameraStream();
     // globals.Provider.initVariables();
     // NOTE: Calling this function here would crash the app.
@@ -58,13 +59,15 @@ class _DetectionState extends State<Detection> {
   deactivate() {
     super.deactivate();
     BodyDetection.stopCameraStream();
+
     globals.Provider.initVariables();
     // sportName = globals.Provider.record.poseName;
   }
 
   @override
   dispose() {
-    super.dispose();
+    globals.Provider.initVariables();
+    BodyDetection.stopCameraStream();
     globals.Provider.initVariables();
   }
 
@@ -72,11 +75,11 @@ class _DetectionState extends State<Detection> {
     await BodyDetection.enablePoseDetection();
     WidgetsFlutterBinding.ensureInitialized();
     final request = await Permission.camera.request();
-    print(request); //PermissionStatus.granted
+    print(request);
     cameras = await availableCameras();
     _camera = CameraController(
       cameras[0],
-      ResolutionPreset.low,
+      ResolutionPreset.medium,
     );
 
     if (request.isGranted) {
@@ -93,25 +96,25 @@ class _DetectionState extends State<Detection> {
     }
   }
 
-  jumpToHomePage() {
+  Future<void> jumpToHomePage() async {
     deactivate();
     Future.delayed(Duration.zero, () {
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => tabBar()),
-        (route) => false,
-      );
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => tabBar()));
+    });
+  }
+
+  Future<void> jumpToRestTime() async {
+    deactivate();
+    Future.delayed(Duration.zero, () {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => RestTime()));
     });
   }
 
   void _handleCameraImage(ImageResult result) {
     // Ignore callback if navigated out of the page.
     if (!mounted) return;
-
-    // To avoid a memory leak issue.
-    // https://github.com/flutter/flutter/issues/60160
-    // PaintingBinding.instance?.imageCache?.clear();
-    //PaintingBinding.instance?.imageCache?.clearLiveImages();
 
     final image = Image.memory(
       result.bytes,
@@ -154,7 +157,7 @@ class _DetectionState extends State<Detection> {
             style: TextStyle(fontSize: 20),
           ),
           content: Container(
-            height: 400,
+            height: 600,
             width: 300,
             // height: 70 * StorageUtil.getDouble("textScaleFactor"),
             child: Column(
@@ -173,6 +176,7 @@ class _DetectionState extends State<Detection> {
     );
   }
 
+  // && (globals.Provider.record == globals.Provider.undoneList.getLastrecord())
   @override
   Widget build(BuildContext context) {
     if (globals.Provider.squatState == "Done" ||
@@ -182,8 +186,9 @@ class _DetectionState extends State<Detection> {
         globals.Provider.sidelegraiseState == "Done" ||
         globals.Provider.lungeState == "Done" ||
         globals.Provider.statedForwardBendStretchState == "Done") {
-      jumpToHomePage();
+      jumpToRestTime(); // 跳到休息時間
     }
+    ;
     return MaterialApp(
       home: Scaffold(
         resizeToAvoidBottomInset: false,
@@ -196,9 +201,11 @@ class _DetectionState extends State<Detection> {
               icon: Icon(Icons.cancel, size: 30.0, color: Colors.white),
               onPressed: () {
                 debugPrint('Cancel');
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => tabBar()));
-                deactivate();
+                Future.delayed(Duration.zero, () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => tabBar()));
+                  deactivate();
+                });
               },
             ),
             title: Text(
@@ -258,8 +265,6 @@ class _DetectionState extends State<Detection> {
               Expanded(
                 child: RepaintBoundary(
                   child: CustomPaint(
-                    // size: const Size(double.infinity, double.infinity),
-                    // size:Size.fromWidth(360),
                     child: _cameraImage,
                     foregroundPainter: PoseMaskPainter(
                       pose: _detectedPose,

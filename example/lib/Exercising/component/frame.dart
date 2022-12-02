@@ -1,3 +1,4 @@
+/*
 import 'dart:async';
 import 'package:body_detection_example/cc/sports%20menu/undoneList.dart';
 import 'package:body_detection_example/cc/tabBar.dart';
@@ -73,8 +74,10 @@ class _FrameState extends State<ExerciseFrame> {
                 Image.asset('assets/images/IMG_20200704_134015.jpg'),
                 Text('動作解說：' + "\n" + UndoneList().getrecord().introduction,
                     style: TextStyle(color: Colors.black, fontSize: 20)),
-                /*Text('次數/組數' + UndoneList().getrecord().number,
-                    style: TextStyle(color: Colors.black, fontSize: 15)),*/
+                */
+/*Text('次數/組數' + UndoneList().getrecord().number,
+                    style: TextStyle(color: Colors.black, fontSize: 15)),*//*
+
               ],
             ),
           ),
@@ -131,9 +134,11 @@ class _FrameState extends State<ExerciseFrame> {
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                   border: Border(
-                    /* color: poseFrameColor,
+                    */
+/* color: poseFrameColor,
                       width: 25,
-                      style: BorderStyle.solid*/
+                      style: BorderStyle.solid*//*
+
                     top: BorderSide(
                         color: poseFrameColor,
                         width: 100,
@@ -225,3 +230,4 @@ class _FrameState extends State<ExerciseFrame> {
     );
   }
 }
+*/

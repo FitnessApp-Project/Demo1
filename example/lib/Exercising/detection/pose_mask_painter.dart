@@ -1,5 +1,5 @@
 import 'dart:ui' as ui;
-import 'package:body_detection_example/Exercising/detection/verify.dart';
+//import 'package:body_detection_example/Exercising/detection/verify.dart';
 import 'package:flutter/widgets.dart';
 import 'package:body_detection/models/pose.dart';
 import 'package:body_detection/models/pose_landmark.dart';
@@ -75,11 +75,11 @@ class PoseMaskPainter extends CustomPainter {
       //PoseLandmarkType.leftElbow左肘
       //PoseLandmarkType.leftShoulder左肩
       //PoseLandmarkType.leftWrist左手腕
-      Verify v = new Verify();
+     /* Verify v = new Verify();
       v.setAngle(
           offsetForPart(landmarksByType[PoseLandmarkType.leftElbow]!),
           offsetForPart(landmarksByType[PoseLandmarkType.leftShoulder]!),
-          offsetForPart(landmarksByType[PoseLandmarkType.leftWrist]!));
+          offsetForPart(landmarksByType[PoseLandmarkType.leftWrist]!));*/
       //--test----------------
     }
 

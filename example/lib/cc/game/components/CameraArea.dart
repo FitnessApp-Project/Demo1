@@ -2,6 +2,9 @@ import 'dart:async';
 
 import 'dart:math';
 
+import 'package:body_detection_example/cc/game/components/GameIn_operate.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'game_detection.dart';
 import '../../helpers/Constants.dart';
 import '../GameOver.dart';
@@ -14,6 +17,13 @@ class CameraArea extends StatefulWidget {
 
   @override
   State<CameraArea> createState() => _CameraAreaState();
+/*
+  String getScore(){
+    return _CameraAreaState().topscore;
+  }
+  void _loadCounter(){
+     _CameraAreaState()._loadCounter();
+  }*/
 }
 
 const double stageHeight = 500;
@@ -32,12 +42,33 @@ class _CameraAreaState extends State<CameraArea> {
   int newScore = 0;
   double move = 1;
   double safeArea = (Random().nextInt(8) + 1) / 10;
+/*  int _counter = 0;
+  final String topscore = "0";
+
+  _loadCounter() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      score = (prefs.getInt(topscore) ?? 0);
+      _counter = (prefs.getInt(topscore) ?? 0);
+    });
+  }
+
+  _setCounter() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    if (newScore > score) {
+      //score = newScore;
+      _counter = newScore; // (prefs.getInt(topscore) ?? 0) ;
+      prefs.setInt(topscore, _counter);
+    }
+  }*/
 
   @override
   void initState() {
     wallx = stageWidth;
     wall2x = stageWidth;
     newScore = 0;
+   // _loadCounter();
   }
 
   @override
@@ -45,19 +76,22 @@ class _CameraAreaState extends State<CameraArea> {
     var duration = Duration(milliseconds: 5);
     timer = Timer.periodic(duration, (timer) {
       double newY = getY;
-
-
       if (wallx < size * 2.5 &&
           (Y - size <= safeArea * stageHeight - 65 ||
               Y >= safeArea * stageHeight + 35)) {
         setState(() {
           if (newScore > score) {
             score = newScore;
+            GameIn_operate().setScore(newScore);
           }
           timer.cancel();
           detection.stopstream();
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => GameOver(currentScore: newScore,)));
+              context,
+              MaterialPageRoute(
+                  builder: (context) => GameOver(
+                        currentScore: newScore,
+                      )));
           Future.delayed(const Duration(seconds: 1), () {
             Navigator.of(context)
               ..pop()
@@ -83,95 +117,94 @@ class _CameraAreaState extends State<CameraArea> {
   Widget build(BuildContext context) {
     stageWidth = MediaQuery.of(context).size.width;
     return Center(
-        child: Column(
-          children: [
-            Container(
-              height: 100,
-              width: MediaQuery.of(context).size.width,
-              margin: EdgeInsets.only(top: 10, left: 40, right: 40, bottom: 10),
-              decoration: BoxDecoration(
-                color: Color.fromRGBO(244, 189, 122, 1.0),
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-              ),
-              alignment: Alignment.center,
-              child: Text(
-                "分數 $newScore ",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 40,
-                    fontWeight: FontWeight.w400),
-              ),
+      child: Column(
+        children: [
+          Container(
+            height: 100,
+            width: MediaQuery.of(context).size.width,
+            margin: EdgeInsets.only(top: 10, left: 40, right: 40, bottom: 10),
+            decoration: BoxDecoration(
+              color: Color.fromRGBO(244, 189, 122, 1.0),
+              borderRadius: BorderRadius.all(Radius.circular(10)),
             ),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: stageHeight,
-              decoration: BoxDecoration(
-                //color: Colors.red,
-                border: Border(
-                    top: BorderSide(
-                        color: kPrimaryDarkColor,
-                        width: 12,
-                        style: BorderStyle.solid),
-                    bottom: BorderSide(
-                        color: kPrimaryDarkColor,
-                        width: 8,
-                        style: BorderStyle.solid)),
-              ),
-              child: Stack(
-                children: [
-                  Positioned(
-                    bottom: 0,
-                    left: 0,
-                    child: detection,
-                  ),
-                  Positioned.fromRect(
-                      rect: Rect.fromCenter(
-                          center: Offset(
-                              wallx, safeArea * stageHeight - 140 - wallHeight),
-                          width: wallWidth,
-                          height: MediaQuery.of(context).size.height),
-                      child: Container(
-                        color: Colors.red,
-                        child: Text(
-                            '${wallx.toString()}/ ${stageWidth.toString()}/ ${wallHeight.toString()}'),
-                      )),
-                  Positioned.fromRect(
-                      rect: Rect.fromCenter(
-                          center: Offset(
-                              wallx, safeArea * stageHeight + 140 + wallHeight),
-                          width: wallWidth,
-                          height: MediaQuery.of(context).size.height),
-                      child: Container(
-                        color: Colors.red,
-                        child: Text(
-                            '${wallx.toString()}/ ${stageWidth.toString()}/ ${wallHeight.toString()}'),
-                      )),
-                  //safe area
-                  Positioned.fromRect(
-                      rect: Rect.fromCenter(
-                          center: Offset(wall2x, safeArea * stageHeight),
-                          width: wallWidth,
-                          height: 100),
-                      child: Container(
-                        //color: Color.fromRGBO(51,225, 0, 0.2),
-                        color: Colors.transparent,
-                        child: Text(
-                            '${(safeArea * stageHeight - 50).toString()}\n '),
-                      )),
-                  Positioned.fromRect(
-                      rect: Rect.fromCenter(
-                          center: Offset(size, Y), width: size, height: size),
-                      child: Container(
-                        color: Colors.orange,
-                        child: Text('${Y}'),
-                      )),
-                ],
-              ),
-              //  ),
+            alignment: Alignment.center,
+            child: Text(
+              "分數 $newScore ",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 40,
+                  fontWeight: FontWeight.w400),
             ),
-          ],
-        ),
-
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: stageHeight,
+            decoration: BoxDecoration(
+              //color: Colors.red,
+              border: Border(
+                  top: BorderSide(
+                      color: kPrimaryDarkColor,
+                      width: 12,
+                      style: BorderStyle.solid),
+                  bottom: BorderSide(
+                      color: kPrimaryDarkColor,
+                      width: 8,
+                      style: BorderStyle.solid)),
+            ),
+            child: Stack(
+              children: [
+                Positioned(
+                  bottom: 0,
+                  left: 0,
+                  child: detection,
+                ),
+                Positioned.fromRect(
+                    rect: Rect.fromCenter(
+                        center: Offset(
+                            wallx, safeArea * stageHeight - 140 - wallHeight),
+                        width: wallWidth,
+                        height: MediaQuery.of(context).size.height),
+                    child: Container(
+                      color: Colors.red,
+                      child: Text(
+                          '${wallx.toString()}/ ${stageWidth.toString()}/ ${wallHeight.toString()}'),
+                    )),
+                Positioned.fromRect(
+                    rect: Rect.fromCenter(
+                        center: Offset(
+                            wallx, safeArea * stageHeight + 140 + wallHeight),
+                        width: wallWidth,
+                        height: MediaQuery.of(context).size.height),
+                    child: Container(
+                      color: Colors.red,
+                      child: Text(
+                          '${wallx.toString()}/ ${stageWidth.toString()}/ ${wallHeight.toString()}'),
+                    )),
+                //safe area
+                Positioned.fromRect(
+                    rect: Rect.fromCenter(
+                        center: Offset(wall2x, safeArea * stageHeight),
+                        width: wallWidth,
+                        height: 100),
+                    child: Container(
+                      //color: Color.fromRGBO(51,225, 0, 0.2),
+                      color: Colors.transparent,
+                      child: Text(
+                          '${(safeArea * stageHeight - 50).toString()}\n '),
+                    )),
+                Positioned.fromRect(
+                    rect: Rect.fromCenter(
+                        center: Offset(size, Y), width: size, height: size),
+                    child: Container(
+                      color: Colors.orange,
+                      child: Text('${Y}'),
+                    )),
+              ],
+            ),
+            //  ),
+          ),
+        ],
+      ),
     );
   }
 }

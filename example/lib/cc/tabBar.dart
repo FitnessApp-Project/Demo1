@@ -62,7 +62,8 @@ class tabBar extends StatelessWidget {
               ),
               leadingWidth: 150,
               /*title: const Icon(Icons.menu),*/
-              actions: [
+              //獎勵箱
+              /*actions: [
                 IconButton(
                   icon: const Icon(
                     Icons.card_giftcard,
@@ -70,7 +71,7 @@ class tabBar extends StatelessWidget {
                   ),
                   onPressed: () => print('按下'),
                 ),
-              ],
+              ],*/
               bottom:
               PreferredSize(
                 preferredSize: _tabBar.preferredSize,

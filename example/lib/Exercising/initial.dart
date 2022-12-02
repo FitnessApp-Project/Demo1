@@ -1,3 +1,4 @@
+/*
 import 'dart:async';
 import 'package:body_detection/models/pose.dart';
 import 'package:body_detection_example/Exercising/restTime.dart';
@@ -33,6 +34,7 @@ class _DetectionInitialState extends State<DetectionInitial> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+*/
 /*      appBar: AppBar(
         backgroundColor: kPrimaryColor,
         leading: IconButton(
@@ -58,10 +60,12 @@ class _DetectionInitialState extends State<DetectionInitial> {
             },
           ),
         ],
-      ),*/
+      ),*//*
+
       body: const Center(
         child: ExerciseFrame(),
       ),
     );
   }
 }
+*/

@@ -2,24 +2,23 @@ import 'dart:isolate';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:body_detection_example/cc/sports menu/poselist.dart';
-
-import 'action_list.dart';
+import 'package:body_detection_example/cc/sports menu/LegTrainMenuList.dart';
 
 const double BoxHeight = 200.0;
 const double gap = 5.0;
 
 var icon_list = <IconData>[
   Icons.format_list_bulleted,
-  Icons.edit,
   Icons.thumb_up,
+  Icons.edit,
   Icons.star_border,
 ];
 
 var boxlabel = <String>[
   '腿部訓練動作列表',
+  '訓練課表',
   '自訂訓練表',
-  '簡單訓練表',
-  '困難訓練課表',
+  //'困難訓練課表',
 ];
 
 class HomePage extends StatelessWidget {
@@ -35,7 +34,7 @@ class HomePage extends StatelessWidget {
           Scrollbar(
             thumbVisibility: true,
             child: ListView.builder(
-              itemCount: 4,
+              itemCount: 3,
               itemBuilder: (context, index) => MyItem(index),
             ),
           ),
@@ -53,59 +52,57 @@ class MyItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = Colors.orange[200 + 100 * (index + 1)];
-    return Container(
-      //alignment: Alignment.center,
-      height: 120,
-      margin: EdgeInsets.only(left: 50, top: 20, right: 50, bottom: 0),
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.all(Radius.circular(20)),
-      ),
-      child: InkWell(
-        child: Stack(
-          alignment: Alignment.centerLeft,
-          children: [
-            Positioned(
-              left: 20,
-              child: Icon(
-                icon_list[index],
-                size: 100,
-                color: Color.fromRGBO(255, 255, 255, 0.4),
+    return Center(
+      child: Container(
+        //alignment: Alignment.center,
+        height: 120,
+        margin: EdgeInsets.only(left: 50, top: 20, right: 50, bottom: 0),
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
+        child: InkWell(
+          child: Stack(
+            alignment: Alignment.centerLeft,
+            children: [
+              Positioned(
+                left: 20,
+                child: Icon(
+                  icon_list[index],
+                  size: 100,
+                  color: Color.fromRGBO(255, 255, 255, 0.4),
+                ),
               ),
-            ),
-            //Text('Scrollable 2 : Index $index'),
-            Center(
-              child: Stack(
-                children: [
-                  Positioned(
-                    child: Text(
-                      boxlabel[index],
-                      style: const TextStyle(
-                        fontSize: 30,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
+              //Text('Scrollable 2 : Index $index'),
+              Center(
+                child: Stack(
+                  children: [
+                    Positioned(
+                      child: Text(
+                        boxlabel[index],
+                        style: const TextStyle(
+                          fontSize: 30,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
+          onTap: () {
+            if (index == 0) {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => LegTrainMenuList()));
+            } else {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => PoseList()));
+            }
+            // print("Click event on Container" + index.toString());
+          },
         ),
-
-        onTap: () {
-          if(index==0){
-            print("list V2");
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => ActionList()));
-          }else{
-            print("list V1");
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => PoseList()));
-          }
-          // print("Click event on Container" + index.toString());
-
-        },
       ),
     );
   }

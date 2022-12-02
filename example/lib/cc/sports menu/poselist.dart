@@ -1,16 +1,16 @@
-import 'package:body_detection_example/cc/Sports%20menu/homepage.dart';
+
 import 'package:body_detection_example/cc/sports%20menu/poseImage.dart';
 import 'package:body_detection_example/cc/sports%20menu/poseIntro.dart';
 import 'package:body_detection_example/cc/sports%20menu/undoneList.dart';
 import 'package:flutter/material.dart';
 
 import 'package:body_detection_example/cc/helpers/Constants.dart';
-import '../../Exercising/detection/detection.dart';
+import '../../poseRecognition/detection.dart';
 import 'package:body_detection_example/cc/poseList/poseRecord.dart';
 import 'package:body_detection_example/cc/poseList/poseRecordList.dart';
 import 'package:body_detection_example/cc/poseList/poseRecordService.dart';
 import '../tabBar.dart';
-
+import 'package:body_detection_example/poseRecognition/provider.dart' as globals;
 class PoseList extends StatefulWidget {
   @override
   _PoseListState createState() {
@@ -22,6 +22,8 @@ class _PoseListState extends State<PoseList> {
   poseRecordList _records = new poseRecordList(records: []);
   poseRecordList _filteredRecords = new poseRecordList(records: []);
   String _searchText = "";
+  String sportName = "";
+  String Context = "";
 
   @override
   void initState() {
@@ -42,6 +44,12 @@ class _PoseListState extends State<PoseList> {
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: appDarkGreyColor,
@@ -50,6 +58,7 @@ class _PoseListState extends State<PoseList> {
           iconSize: 30,
           icon: Icon(Icons.arrow_back, size: 30.0, color: Colors.white),
           onPressed: () {
+            debugPrint('Cancel');
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => tabBar()));
           },
@@ -141,8 +150,10 @@ class _PoseListState extends State<PoseList> {
   }
 
   Widget _buildListItem(BuildContext context, poseRecord record) {
+    sportName = record.poseName;
+    Context = record.number;
     return Card(
-      key: ValueKey(record.poseName),
+      key: ValueKey(sportName),
       elevation: 8.0,
       shadowColor: Colors.white,
       margin: EdgeInsets.symmetric(horizontal: 30.0, vertical: 6.0),
@@ -159,7 +170,7 @@ class _PoseListState extends State<PoseList> {
               Expanded(
                 flex: 4,
                 child: Container(
-                  child: PoseImage(),
+                  child: PoseImage(pose:record),
                 ),
               ),
               Expanded(
@@ -195,7 +206,10 @@ class _PoseListState extends State<PoseList> {
                   context,
                   MaterialPageRoute(
                       //builder: (context) => Detection()));
-                      builder: (context) => PoseIntro()));
+                      builder: (context) => PoseIntro(
+                          SportName: UndoneList.getrecord().poseName, Context: UndoneList.getrecord().introduction,
+                          number: UndoneList.getrecord().number , whichCardyouChoose: 2,
+                      )));
       },
       child: Center(
         child: Container(

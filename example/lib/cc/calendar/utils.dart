@@ -48,35 +48,35 @@ List<Event> test2 = [
 ];
 
 var name = [
-  0,
-  2,
-  3,
-  1,
-  2,
-  3,
-  2,
-  2,
+  "側臥抬腿",
+  "跪姿抬腿",
+  "弓箭步",
+  "深蹲",
+  "弓箭步",
+  "坐姿前彎伸展",
+  "跪姿抬腿",
+  "坐姿前彎伸展",
 ];
 
 var minute = [
-  0,
+  5,
+  8,
   2,
+  8,
   3,
-  2,
-  1,
-  2,
+  18,
+  10,
   3,
-  2,
 ];
 var count = [
-  0,
-  2,
-  3,
-  2,
-  1,
-  2,
-  3,
-  2,
+  "18:03",
+  "8:03",
+  "11:33",
+  "08:32",
+  "18:21",
+  "18:24",
+  "14:57",
+  "09:10",
 ];
 
 var Eventnum = [
@@ -97,12 +97,10 @@ final _kEventSource = {
 
         List.generate(
             Eventnum.elementAt(i++),
-
             (index) => Event(
-                '${name[index+i]} | 分鐘數:${minute[index+i]} | 次數:${count[index+i]} '))
+                ' ${count[index + i]}| ${name[index + i]} | 時長:${minute[index + i]}分|'))
   //${index + 1}
 };
-
 
 int getHashCode(DateTime key) {
   return key.day * 1000000 + key.month * 10000 + key.year;

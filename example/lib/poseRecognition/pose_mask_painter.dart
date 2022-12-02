@@ -1,16 +1,15 @@
 import 'dart:ui' as ui;
 
-//import 'package:FitnessApp/main.dart';
+//import 'package:body_detection_example/main.dart';
+
 import 'package:flutter/widgets.dart';
 import 'package:body_detection/models/pose.dart';
 import 'package:body_detection/models/pose_landmark.dart';
 import 'package:body_detection/models/pose_landmark_type.dart';
-
-import 'package:body_detection/models/point3d.dart';
 import 'dart:math';
 
 import 'provider.dart' as globals;
-//import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:pausable_timer/pausable_timer.dart';
 
 class PoseMaskPainter extends CustomPainter {
@@ -18,9 +17,9 @@ class PoseMaskPainter extends CustomPainter {
     required this.pose,
     required this.mask,
     required this.imageSize,
-
+    required this.sportName,
   });
-
+  final String sportName;
   final Pose? pose;
   final ui.Image? mask;
   final Size imageSize;
@@ -45,8 +44,31 @@ class PoseMaskPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-
     _printPose(canvas, size);
+    switch(sportName){
+      case "深蹲":
+        _squat(canvas, size);//深蹲
+        break;
+      case "自體腿部屈伸":
+        _legpullover(canvas, size);//自體腿部屈伸
+        break;
+      case "側臥抬腿":
+        _sidelegraise(canvas, size);//側臥抬腿
+        break;
+      case "跪姿抬腿":
+        _kneelinglegraise(canvas, size);//跪姿抬腿
+        break;
+      case "金字塔式拉伸":
+        _pyramidStretch(canvas, size);//金字塔式拉伸
+        break;
+      case "弓箭步":
+        _lunge(canvas, size);//弓箭步
+        break;
+      case "坐姿前彎伸展":
+        _statedForwardBendStretch(canvas, size); //坐姿前彎伸展
+        break;
+    }
+
     // _testTimer(canvas, size);
      // _squat(canvas, size);//深蹲
     // _legpullover(canvas, size);//自體腿部屈伸
@@ -54,7 +76,7 @@ class PoseMaskPainter extends CustomPainter {
     // _kneelinglegraise(canvas, size);//跪姿抬腿
     // _pyramidStretch(canvas, size);//金字塔式拉伸
     // _lunge(canvas, size);//弓箭步
-    _statedForwardBendStretch(canvas, size); //坐姿前彎伸展
+    // _statedForwardBendStretch(canvas, size); //坐姿前彎伸展
   }
 
   @override
@@ -214,7 +236,7 @@ class PoseMaskPainter extends CustomPainter {
     //查看是否將攝影機擺正，盡量去避免辨識錯誤可能性
     print(landmarksByType[PoseLandmarkTypeExtension.fromId(30)]!.position.y- landmarksByType[PoseLandmarkTypeExtension.fromId(0)]!.position.y);
     if(landmarksByType[PoseLandmarkTypeExtension.fromId(30)]!.position.y- landmarksByType[PoseLandmarkTypeExtension.fromId(0)]!.position.y > 600){
-      print("請將攝影機調整以照到全身");
+      // print("請將攝影機調整以照到全身");
       return;
     }
     int rightKneeAngle = calculate_angle(rightHip, rightKnee, rightAnkle);
@@ -259,8 +281,8 @@ class PoseMaskPainter extends CustomPainter {
         globals.Provider.firstLock = false;
       }
     }
-    if(globals.Provider.counter >= 5){
-      globals.Provider.sidelegraiseState = "Done";
+    if(globals.Provider.counter >= 1){
+      globals.Provider.squatState = "Done";
     }
   }
 
@@ -408,7 +430,11 @@ class PoseMaskPainter extends CustomPainter {
         globals.Provider.firstLock = false;
       }
     }
+    if(globals.Provider.counter >= 1){
+      globals.Provider.legpulloverState = "Done";
+    }
   }
+
 
   //側臥抬腿------------------------------------------------------------------------------------------------------
   void _sidelegraise(Canvas canvas, Size size) {
@@ -569,6 +595,9 @@ class PoseMaskPainter extends CustomPainter {
         }
       }
     }
+    if(globals.Provider.counter >= 1){
+      globals.Provider.sidelegraiseState = "Done";
+    }
   }
 
   // //跪姿抬腿------------------------------------------------------------------------------------------------------
@@ -669,10 +698,10 @@ class PoseMaskPainter extends CustomPainter {
     tp4.paint(canvas, offsetForPart(leftKnee));
 
     //動作角度判別計數
-    if(globals.Provider.kneelinglegraise == ""){
-      globals.Provider.kneelinglegraise = "left";
+    if(globals.Provider.kneelinglegraiseState == ""){
+      globals.Provider.kneelinglegraiseState = "left";
       globals.Provider.state = "up";
-    }else if(globals.Provider.kneelinglegraise == "left"){ //抬左腿
+    }else if(globals.Provider.kneelinglegraiseState == "left"){ //抬左腿
       if(rightKneeAngle > 40 && rightKneeAngle < 100 && rightHipAngle > 80 && leftKneeAngle > 140 && globals.Provider.sidelegLock == false){
         globals.Provider.state = "down";
         globals.Provider.sidelegLock = true;
@@ -681,11 +710,11 @@ class PoseMaskPainter extends CustomPainter {
         globals.Provider.sidelegLock = false;
         globals.Provider.counter += 1;
         if(globals.Provider.counter >= 10){
-          globals.Provider.kneelinglegraise = "right";
+          globals.Provider.kneelinglegraiseState = "right";
           globals.Provider.counter = 0;
         }
       }
-    }else if(globals.Provider.kneelinglegraise == "right"){//抬右腿
+    }else if(globals.Provider.kneelinglegraiseState == "right"){//抬右腿
       if(leftKneeAngle > 40 && leftKneeAngle < 100 && leftHipAngle > 80 && rightKneeAngle > 140 && globals.Provider.sidelegLock == false){
         globals.Provider.state = "down";
         globals.Provider.sidelegLock = true;
@@ -694,10 +723,13 @@ class PoseMaskPainter extends CustomPainter {
         globals.Provider.sidelegLock = false;
         globals.Provider.counter += 1;
         if(globals.Provider.counter >= 10){
-          globals.Provider.kneelinglegraise = "Done";
+          globals.Provider.kneelinglegraiseState = "Done";
           globals.Provider.counter = 0;
         }
       }
+    }
+    if(globals.Provider.counter >= 1){
+      globals.Provider.kneelinglegraiseState = "Done";
     }
   }
   // //金字塔式拉伸------------------------------------------------------------------------------------------------------
@@ -892,6 +924,9 @@ class PoseMaskPainter extends CustomPainter {
           timer.pause();
         }
       }
+    if(globals.Provider.counter >= 1){
+      globals.Provider.pyramidStretchState = "Done";
+    }
     }
 
   //弓箭步------------------------------------------------------------------------------------------------------
@@ -1083,6 +1118,9 @@ class PoseMaskPainter extends CustomPainter {
       }else{
         timer1.pause();
       }
+    }
+    if(globals.Provider.counter >= 1){
+      globals.Provider.lungeState = "Done";
     }
   }
 
@@ -1279,6 +1317,9 @@ class PoseMaskPainter extends CustomPainter {
       }else{
         timer2.pause();
       }
+    }
+    if(globals.Provider.counter >= 1){
+      globals.Provider.statedForwardBendStretchState = "Done";
     }
   }
 }
