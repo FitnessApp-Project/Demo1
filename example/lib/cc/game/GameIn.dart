@@ -22,18 +22,20 @@ class GameIn extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
+                    alignment:Alignment.center,
                     height: 300,
                     width: double.infinity,
                     margin: EdgeInsets.only(
                         left: 50, right: 50, top: 60, bottom: 20),
                     padding: EdgeInsets.all(20),
-                    alignment: Alignment.topCenter,
                     decoration: BoxDecoration(
                       color: Color(0xFFFFD4A3),
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                     ),
                     child: Text(
-                      '遊戲介紹',
+                      '遊戲介紹\n' +
+                          "玩家使用的左手來控制小方塊高低，碰到障礙物就結束遊戲!"
+                              "",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 20,

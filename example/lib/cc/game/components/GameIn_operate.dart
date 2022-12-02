@@ -1,11 +1,11 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../../helpers/Constants.dart';
+import '../GameOver.dart';
 import '../Play.dart';
-//import 'package:window_size/window_size.dart';
+
 
 const double windowWidth = 1024;
 const double windowHeight = 800;
@@ -52,6 +52,7 @@ class _GameIn_operateState extends State<GameIn_operate> {
               onTap: () {
                 Navigator.of(context, rootNavigator: true)
                     .push(CupertinoPageRoute(builder: (BuildContext context) {
+                 // return GameOver( currentScore: 0,);
                   return Play();
                 }));
               },
