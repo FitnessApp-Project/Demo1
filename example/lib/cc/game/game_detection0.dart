@@ -1,3 +1,4 @@
+/*
 import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
@@ -11,11 +12,10 @@ import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
 import 'package:body_detection/body_detection.dart';
 import 'package:permission_handler/permission_handler.dart';
-import '../../cc/sports menu/undoneList.dart';
-import 'pose_mask_painter.dart';
+import 'game_mask_painter.dart';
 
 class Detection extends StatefulWidget {
-  const Detection({
+  Detection({
     Key? key,
   }) : super(key: key);
 
@@ -38,6 +38,7 @@ class _DetectionState extends State<Detection> {
   CameraDescription? cameraDescription;
   List<CameraDescription> cameras = [];
   late CameraController _camera; //final
+  double? Y;
 
   @override
   void initState() {
@@ -68,7 +69,6 @@ class _DetectionState extends State<Detection> {
   Future<void> _stopCameraStream() async {
     await BodyDetection.stopCameraStream();
     _camera.dispose();
-    print('stop');
     setState(() {
       _cameraImage = null;
       _imageSize = Size.zero;
@@ -76,13 +76,7 @@ class _DetectionState extends State<Detection> {
   }
 
   void _handleCameraImage(ImageResult result) {
-    // Ignore callback if navigated out of the page.
     if (!mounted) return;
-
-    // To avoid a memory leak issue.
-    // https://github.com/flutter/flutter/issues/60160
-    // PaintingBinding.instance?.imageCache?.clear();
-    //PaintingBinding.instance?.imageCache?.clearLiveImages();
 
     final image = Image.memory(
       result.bytes,
@@ -121,8 +115,7 @@ class _DetectionState extends State<Detection> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      //width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
       child: CustomPaint(
         child: _cameraImage,
         foregroundPainter: PoseMaskPainter(
@@ -135,3 +128,4 @@ class _DetectionState extends State<Detection> {
     );
   }
 }
+*/

@@ -4,6 +4,7 @@ import 'package:body_detection_example/cc/tabBar.dart';
 import 'package:flutter/material.dart';
 import '../../cc/helpers/Constants.dart';
 import '../../Exercising/detection/detection.dart';
+import '../../cc/sports menu/poselist.dart';
 import '../restTime.dart';
 
 class ExerciseFrame extends StatefulWidget {
@@ -39,10 +40,10 @@ class _FrameState extends State<ExerciseFrame> {
       } else {
         timer.cancel();
         detection.stopstream();
-        if(UndoneList().getrecord()==UndoneList().getLastrecord()){
+        if (UndoneList().getrecord() == UndoneList().getLastrecord()) {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => tabBar()));
-        }else{
+        } else {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => RestTime()));
         }
@@ -51,6 +52,7 @@ class _FrameState extends State<ExerciseFrame> {
     return count;
   }
 
+  //點選問號，跳出彈窗
   Future<void> _showPoseIntro(BuildContext context) {
     return showDialog<void>(
       context: context,
@@ -110,7 +112,7 @@ class _FrameState extends State<ExerciseFrame> {
             Positioned(bottom: 0, left: 0, child: detection),
             //半圓結構
             Positioned(
-              top: -310,
+              top: -300,
               child: Container(
                 width: 500,
                 height: 500,
@@ -122,17 +124,58 @@ class _FrameState extends State<ExerciseFrame> {
             ),
             //--邊框
             Positioned(
+              bottom: 0,
+              left: 0,
               child: Container(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
-                  border: Border.all(
-                      color: poseFrameColor,
+                  border: Border(
+                    /* color: poseFrameColor,
                       width: 25,
-                      style: BorderStyle.solid),
+                      style: BorderStyle.solid*/
+                    top: BorderSide(
+                        color: poseFrameColor,
+                        width: 100,
+                        style: BorderStyle.solid),
+                    bottom: BorderSide(
+                        color: poseFrameColor,
+                        width: 25,
+                        style: BorderStyle.solid),
+                    right: BorderSide(
+                        color: poseFrameColor,
+                        width: 25,
+                        style: BorderStyle.solid),
+                    left: BorderSide(
+                        color: poseFrameColor,
+                        width: 25,
+                        style: BorderStyle.solid),
+                  ),
                 ),
               ),
             ),
+            Positioned(
+              top: 0,
+              left: 40,
+              child: Column(
+                children: [
+                  IconButton(
+                    iconSize: 30,
+                    icon: Icon(Icons.cancel, size: 30.0, color: Colors.white),
+                    onPressed: () {
+                      debugPrint('Cancel');
+                      Navigator.push(
+                          context, MaterialPageRoute(builder: (context) => PoseList()));
+                      ExerciseFrame().stopTime();
+                    },
+                  ),
+                  Text(UndoneList().getrecord().poseName.toString()),
+
+                ],
+              ),
+            ),
             const Positioned(
-              top: 40,
+              top: 100,
               left: 40,
               child: Text(
                 "次數",
@@ -140,7 +183,7 @@ class _FrameState extends State<ExerciseFrame> {
               ),
             ),
             Positioned(
-              top: 70,
+              top: 100,
               child: Text(
                 count.toString(),
                 style: TextStyle(fontSize: 100, color: Colors.white),
@@ -148,7 +191,7 @@ class _FrameState extends State<ExerciseFrame> {
             ),
             Positioned(
               right: 40,
-              top: 40,
+              top: 100,
               child: Text(
                 UndoneList().getrecord().number,
                 style: TextStyle(fontSize: 25, color: Colors.white),

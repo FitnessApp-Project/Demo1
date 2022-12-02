@@ -1,11 +1,11 @@
-// Copyright 2019 Aleksander Woźniak
-// SPDX-License-Identifier: Apache-2.0
-
+import 'package:body_detection_example/cc/calendar/DateDB.dart';
 import 'package:flutter/material.dart';
-
+import 'package:path/path.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sqflite/sqflite.dart';
 import '../helpers/Constants.dart';
-
 import 'package:table_calendar/table_calendar.dart';
+import 'DateRecorde.dart';
 import 'utils.dart';
 
 class TableEventsExample extends StatefulWidget {
@@ -23,12 +23,16 @@ class _TableEventsExampleState extends State<TableEventsExample> {
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
 
+
   @override
   void initState() {
     super.initState();
-
     _selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
+/*    DateDB.initDatabase();
+    var date=DateRecorde(id: 99, name: "dd", age: 9);
+    DateDB.insertData(new DateRecorde(id: 99, name: "dd", age: 9));
+    DateDB.showAllData();*/
   }
 
   @override
@@ -107,7 +111,7 @@ class _TableEventsExampleState extends State<TableEventsExample> {
               outsideDaysVisible: false,
             ),
             onDaySelected: _onDaySelected,
-           // onRangeSelected: _onRangeSelected,
+            // onRangeSelected: _onRangeSelected,
             onFormatChanged: (format) {
               if (_calendarFormat != format) {
                 setState(() {
@@ -156,3 +160,6 @@ class _TableEventsExampleState extends State<TableEventsExample> {
     );
   }
 }
+
+
+//https://ithelp.ithome.com.tw/articles/10227611

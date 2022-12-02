@@ -33,7 +33,7 @@ class _DetectionInitialState extends State<DetectionInitial> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+/*      appBar: AppBar(
         backgroundColor: kPrimaryColor,
         leading: IconButton(
           iconSize: 30,
@@ -58,7 +58,7 @@ class _DetectionInitialState extends State<DetectionInitial> {
             },
           ),
         ],
-      ),
+      ),*/
       body: const Center(
         child: ExerciseFrame(),
       ),

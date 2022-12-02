@@ -43,44 +43,33 @@ class _GameIn_operateState extends State<GameIn_operate> {
               '最高分數: $score',
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 20,
+                fontSize: 30,
                 fontWeight: FontWeight.bold,
               ),
             ),
-
             Padding(padding: EdgeInsets.all(10)),
-            Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(40)),
-                    ),
-                    child: TextButton(
-                      child: Text(
-                        '開始',
-                        style: TextStyle(
-                          color: kPrimaryColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 40,
-                        ),
-                      ),
-                      onPressed: () {
-                        print('按下開始');
-                        print(score);
-
-                        Navigator.of(context, rootNavigator: true).push(
-                            CupertinoPageRoute(builder: (BuildContext context) {
-                          return Play();
-                        }));
-                      },
-                    ),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context, rootNavigator: true)
+                    .push(CupertinoPageRoute(builder: (BuildContext context) {
+                  return Play();
+                }));
+              },
+              child: Container(
+                alignment: Alignment.center,
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(40)),
+                ),
+                child: const Text(
+                  '開始',
+                  style: TextStyle(
+                    color: kPrimaryColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 40,
                   ),
                 ),
-              ],
+              ),
             ),
           ],
         ),

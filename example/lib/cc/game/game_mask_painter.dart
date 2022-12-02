@@ -46,10 +46,10 @@ class PoseMaskPainter extends CustomPainter {
     // Landmark connections 線段連線
     final landmarksByType = {for (final it in pose!.landmarks) it.type: it};
 
-    Offset nose = offsetForPart(landmarksByType[PoseLandmarkType.nose]!);
+    Offset nose = offsetForPart(landmarksByType[PoseLandmarkType.rightIndexFinger]!);
     getY = nose.dy;
 
-    /*print("////////////////");
+    print("////////////////");
     print("${nose.dy} ////////////////");
     print("${nose} ////////////////");
 
@@ -77,7 +77,7 @@ class PoseMaskPainter extends CustomPainter {
       tp.textDirection = TextDirection.ltr; //文字對齊方向，對齊左邊
       tp.layout();
       tp.paint(canvas, nose);
-    }*/
+    }
   }
 
   @override

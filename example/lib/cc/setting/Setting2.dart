@@ -19,16 +19,28 @@ class Setting2 extends StatefulWidget {
   int getRestTime() {
     return _Setting2State().getRestTime();
   }
+  TimeOfDay? getNotifyTime(){
+    return _Setting2State().getNotifyTime();
+  }
+
 }
 
 class _Setting2State extends State<Setting2> {
   final TextEditingController myController = new TextEditingController();
   static int restTime = 5; //運動間休息預設
-  static String time = "20:00"; //預設通知時間
+  //static DateTime notifytime = DateTime.utc(DateTime.now().hour,DateTime.now().minute, DateTime.now().second); //預設通知時間
+
   late final LocalNotificationService service;
+  //TimeOfDay t= TimeOfDay.fromDateTime(DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day,20,0,0));
+  TimeOfDay t= TimeOfDay.fromDateTime(DateTime.now());
+  static String? time; //預設通知時間
 
   int getRestTime() {
     return restTime;
+  }
+
+  TimeOfDay? getNotifyTime(){
+    return t;
   }
 
   @override
@@ -36,12 +48,13 @@ class _Setting2State extends State<Setting2> {
     service = LocalNotificationService();
     service.intialize();
     listenToNotification();
+    time = t.toString().substring(10, 15);
     super.initState();
   }
 
-  Future<TimeOfDay?> showTime(context) async {
-    TimeOfDay? t = await showTimePicker(
-        context: context, initialTime: TimeOfDay.fromDateTime(DateTime.now()));
+  Future<TimeOfDay?> selectTime(context) async {
+     t = (await showTimePicker(
+        context: context, initialTime: TimeOfDay.fromDateTime(DateTime.now())))!;
 
     /*将选择日期显示出来*/
     setState(() {
@@ -88,7 +101,7 @@ class _Setting2State extends State<Setting2> {
             SettingsTile.switchTile(
               onToggle: (value) {},
               initialValue: true,
-              leading: Icon(Icons.format_paint),
+              leading: Icon(Icons.share_arrival_time_outlined),
               title: Text('運動提醒'),
               trailing: ElevatedButton(
                 onPressed: () async {
@@ -99,14 +112,14 @@ class _Setting2State extends State<Setting2> {
               ),
             ),
             SettingsTile.navigation(
-              leading: Icon(Icons.access_time_filled),
+             // leading: Icon(Icons.access_time_filled),
               title: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('提醒時間: $time'),
                     TextButton(
                       onPressed: () {
-                        showTime(context);
+                        selectTime(context);
                       },
                       child: Text("選擇時間"),
                     )

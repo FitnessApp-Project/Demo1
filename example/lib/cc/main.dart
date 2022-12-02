@@ -1,13 +1,8 @@
-import 'package:body_detection_example/cc/sports%20menu/poseIntro.dart';
-import 'package:body_detection_example/cc/sports%20menu/poselist.dart';
+
 import 'package:body_detection_example/cc/tabBar.dart';
 import 'package:flutter/material.dart';
-import 'package:body_detection_example/cc//login//Screens/Welcome/welcome_screen.dart';
 import 'package:body_detection_example/cc/helpers/Constants.dart';
 
-import 'Sports menu/homepage.dart';
-import 'calendar/CalendarPage.dart';
-import 'game/Play.dart';
 
 void main() => runApp(const MyApp());
 
