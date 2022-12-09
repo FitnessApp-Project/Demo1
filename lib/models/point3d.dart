@@ -1,15 +1,3 @@
-class Point3d {
-  final double x;
-  final double y;
-  final double z;
-
-  Point3d({required this.x, required this.y, required this.z});
-
-  factory Point3d.fromMap(Map<Object?, Object?> map) {
-    return Point3d(
-      x: map['x'] as double,
-      y: map['y'] as double,
-      z: map['z'] as double,
-    );
-  }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:bc38e0d4a306a84953e0be9a7a11879cc5930e628dcdae9a605df40c11cc2ac3
+size 311

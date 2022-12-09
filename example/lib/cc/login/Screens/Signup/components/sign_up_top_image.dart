@@ -1,35 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-
-import 'package:body_detection_example/cc/helpers/Constants.dart';
-
-class SignUpScreenTopImage extends StatelessWidget {
-  const SignUpScreenTopImage({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(
-          "註冊".toUpperCase(),
-          style: TextStyle(
-              fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white),
-        ),
-        SizedBox(height: defaultPadding),
-        Row(
-          children: [
-            const Spacer(),
-            Expanded(
-              flex: 8,
-              child: SvgPicture.asset("assets/icons/signup.svg"),
-            ),
-            const Spacer(),
-          ],
-        ),
-        SizedBox(height: defaultPadding),
-      ],
-    );
-  }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:bf5d6f889ec859d749590ca066237eef45390de36814a6664cf4c43573d0ef6c
+size 880

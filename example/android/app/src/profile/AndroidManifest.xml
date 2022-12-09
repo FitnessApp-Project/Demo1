@@ -1,7 +1,3 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.u0x48lab.body_detection_example">
-    <!-- Flutter needs it to communicate with the running application
-         to allow setting breakpoints, to provide hot reload, etc.
-    -->
-    <uses-permission android:name="android.permission.INTERNET"/>
-</manifest>
+version https://git-lfs.github.com/spec/v1
+oid sha256:52cd3986d2c66a314013a638f876d82c68ed965fb56a864049ecd1beb79d5f0a
+size 343

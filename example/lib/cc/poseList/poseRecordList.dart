@@ -1,20 +1,3 @@
-import 'poseRecord.dart';
-
-class poseRecordList {
-  List<poseRecord> records = [];
-
-  poseRecordList({
-    required this.records
-  });
-
-  factory poseRecordList.fromJson(List<dynamic> parsedJson) {
-
-    List<poseRecord> records = <poseRecord>[];
-
-    records = parsedJson.map((i) => poseRecord.fromJson(i)).toList();
-
-    return new poseRecordList(
-      records: records,
-    );
-  }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:e71ed8abd3195402fc26e2bbdf118b4cddc5a99f64e0fbd1d48dd684b8da2dbc
+size 385

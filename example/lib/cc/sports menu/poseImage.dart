@@ -1,28 +1,3 @@
-
-import 'package:flutter/material.dart';
-
-import '../poseList/poseRecord.dart';
-
-class PoseImage extends StatelessWidget {
-
-  const PoseImage({
-    required this.pose
-  }) ;
-  final poseRecord pose;
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20),
-          bottomLeft: Radius.circular(20),
-        ),
-        color: Colors.yellow,
-        image: DecorationImage(
-          image: new ExactAssetImage(pose.photo),
-          fit: BoxFit.cover,
-        ),
-      ),
-    );
-  }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:d20c1ec390cf57c2aba61be079d7c107b285adafd3fce52759224f85d90a501f
+size 642

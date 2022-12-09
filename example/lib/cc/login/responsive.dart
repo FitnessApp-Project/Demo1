@@ -1,36 +1,3 @@
-import 'package:flutter/material.dart';
-
-class Responsive extends StatelessWidget {
-  final Widget mobile;
-  final Widget? tablet;
-  final Widget desktop;
-
-  const Responsive({
-    Key? key,
-    required this.mobile,
-    this.tablet,
-    required this.desktop,
-  }) : super(key: key);
-
-  static bool isMobile(BuildContext context) =>
-      MediaQuery.of(context).size.width < 576;
-
-  static bool isTablet(BuildContext context) =>
-      MediaQuery.of(context).size.width >= 576 &&
-      MediaQuery.of(context).size.width <= 992;
-
-  static bool isDesktop(BuildContext context) =>
-      MediaQuery.of(context).size.width > 992;
-
-  @override
-  Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
-    if (size.width > 992) {
-      return desktop;
-    } else if (size.width >= 576 && tablet != null) {
-      return tablet!;
-    } else {
-      return mobile;
-    }
-  }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:01aa32d61d0b02c3371a8268a3e46dba302546eae2ef5af759f5b834c2fb1392
+size 900

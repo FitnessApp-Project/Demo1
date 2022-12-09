@@ -1,19 +1,3 @@
-import 'poseRecordList.dart';
-import 'package:flutter/services.dart';
-import 'dart:convert';
-
-
-class poseRecordService {
-
-  Future<String> _loadRecordsAsset() async {
-    return await rootBundle.loadString('assets/data/posedata.json');
-  }
-
-  Future<poseRecordList> loadRecords() async {
-    String jsonString = await _loadRecordsAsset();
-    final jsonResponse = json.decode(jsonString);
-    poseRecordList records = new poseRecordList.fromJson(jsonResponse);
-    return records;
-  }
-
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:a14dd53b26d7c8d7c22694620dc1fdcc87da2e8c0a2b4bfc51dc8aec33187f14
+size 487

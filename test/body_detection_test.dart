@@ -1,18 +1,3 @@
-import 'package:flutter/services.dart';
-import 'package:flutter_test/flutter_test.dart';
-
-void main() {
-  const MethodChannel channel = MethodChannel('body_detection');
-
-  TestWidgetsFlutterBinding.ensureInitialized();
-
-  setUp(() {
-    channel.setMockMethodCallHandler((MethodCall methodCall) async {
-      return '42';
-    });
-  });
-
-  tearDown(() {
-    channel.setMockMethodCallHandler(null);
-  });
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:7e00fe1d984fd636c5679f2b90fc0054667af97128f79a3361fabbc305f31a36
+size 404

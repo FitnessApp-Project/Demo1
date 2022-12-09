@@ -1,10 +1,3 @@
-# This file tracks properties of this Flutter project.
-# Used by Flutter tool to assess capabilities and perform upgrades etc.
-#
-# This file should be version controlled and should not be manually edited.
-
-version:
-  revision: 18116933e77adc82f80866c928266a5b4f1ed645
-  channel: stable
-
-project_type: app
+version https://git-lfs.github.com/spec/v1
+oid sha256:b7e9e51dbf01f50d11f9b6636f1e56426bce2b3e1adf8e51ff350e7d34994332
+size 305

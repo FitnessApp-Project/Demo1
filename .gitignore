@@ -1,7 +1,3 @@
-.DS_Store
-.dart_tool/
-
-.packages
-.pub/
-
-build/
+version https://git-lfs.github.com/spec/v1
+oid sha256:d1695dcc5f524459084a2e3b86c3358c1f8b85a63c5b0e7e50a307ade21ba150
+size 47

@@ -1,36 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:body_detection_example/cc/helpers/Constants.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-
-class SocalIcon extends StatelessWidget {
-  final String? iconSrc;
-  final Function? press;
-  const SocalIcon({
-    Key? key,
-    this.iconSrc,
-    this.press,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: press as void Function()?,
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 10),
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          border: Border.all(
-            width: 2,
-            color: kPrimaryLightColor,
-          ),
-          shape: BoxShape.circle,
-        ),
-        child: SvgPicture.asset(
-          iconSrc!,
-          height: 20,
-          width: 20,
-        ),
-      ),
-    );
-  }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:821ae0b140c2f8ba3d6aa5d6cb5ae52c1a13f08dcf297d9e13a324626a608e9e
+size 899

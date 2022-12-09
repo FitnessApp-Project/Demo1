@@ -1,27 +1,3 @@
-#
-# To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html.
-# Run `pod lib lint body_detection.podspec` to validate before publishing.
-#
-Pod::Spec.new do |s|
-  s.name             = 'body_detection'
-  s.version          = '0.0.1'
-  s.summary          = 'A new flutter plugin project.'
-  s.description      = <<-DESC
-A new flutter plugin project.
-                       DESC
-  s.homepage         = 'http://example.com'
-  s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Your Company' => 'email@example.com' }
-  s.source           = { :path => '.' }
-  s.source_files = 'Classes/**/*'
-  s.static_framework = true
-  s.dependency 'Flutter'
-  s.dependency 'GoogleMLKit/PoseDetection', '2.3.0'
-  s.dependency 'GoogleMLKit/PoseDetectionAccurate', '2.3.0'
-  s.dependency 'GoogleMLKit/SegmentationSelfie', '2.3.0'
-  s.platform = :ios, '10.0'
-
-  # Flutter.framework does not contain a i386 slice.
-  s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
-  s.swift_version = '5.0'
-end
+version https://git-lfs.github.com/spec/v1
+oid sha256:e447e9b2c442126acf152b61cab59b88e1a55c26d1f75e6af34b68ea47115732
+size 1072

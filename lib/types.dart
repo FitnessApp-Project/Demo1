@@ -1,8 +1,3 @@
-import 'models/image_result.dart';
-
-import 'models/pose.dart';
-import 'models/body_mask.dart';
-
-typedef ImageCallback = Function(ImageResult result);
-typedef PoseCallback = Function(Pose? result);
-typedef BodyMaskCallback = Function(BodyMask? result);
+version https://git-lfs.github.com/spec/v1
+oid sha256:561e8da0e8fea7fdc19b00e7d2fa5ca14ec27712c9a246888176e911921ac5b4
+size 252

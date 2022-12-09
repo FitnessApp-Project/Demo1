@@ -1,15 +1,3 @@
-#import "BodyDetectionPlugin.h"
-#if __has_include(<body_detection/body_detection-Swift.h>)
-#import <body_detection/body_detection-Swift.h>
-#else
-// Support project import fallback if the generated compatibility header
-// is not copied when this plugin is created as a library.
-// https://forums.swift.org/t/swift-static-libraries-dont-copy-generated-objective-c-header/19816
-#import "body_detection-Swift.h"
-#endif
-
-@implementation BodyDetectionPlugin
-+ (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
-  [SwiftBodyDetectionPlugin registerWithRegistrar:registrar];
-}
-@end
+version https://git-lfs.github.com/spec/v1
+oid sha256:0581412d81eb5a038fc9a2fbfaab4c5c3a9671fee86cdb09e979e7f4294e1e41
+size 598
